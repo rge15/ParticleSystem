@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+particle
+
+# Timer Files
+*Timer.txt
