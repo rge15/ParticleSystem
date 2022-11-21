@@ -1,28 +1,27 @@
 #include "Timer.hpp"
 
 
-DemoTimer::DemoTimer( int p_frameRate ) noexcept
-: _frameRate { p_frameRate }
+Timer::Timer( int p_frameRate ) noexcept
+: _refreshTime { 1.f / p_frameRate }
 {}
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
 double
-DemoTimer::ellapsedTime() const noexcept
+Timer::ellapsedTime() const noexcept
 {
-	return ( DemoTimer::clock::now() - _initTime ).count();
+	return ( Timer::clock::now() - _initTime ).count();
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
 void
-DemoTimer::reset( int p_frameRate ) noexcept
+Timer::reset( int p_frameRate ) noexcept
 {
 	if( p_frameRate > 0 )
 	{
-		_frameRate = p_frameRate;
 		_refreshTime = 1.f/p_frameRate;
 	}
 	_initTime = clock::now();
@@ -34,7 +33,7 @@ DemoTimer::reset( int p_frameRate ) noexcept
 //-----------------------------------------------------------------------------
 
 double
-DemoTimer::ellapsedSeconds() const noexcept
+Timer::ellapsedSeconds() const noexcept
 {
 	return ( ellapsedTime() / 1000000000.0f );
 }
@@ -43,7 +42,7 @@ DemoTimer::ellapsedSeconds() const noexcept
 //-----------------------------------------------------------------------------
 
 double
-DemoTimer::deltaTime() noexcept
+Timer::deltaTime() const noexcept
 {
 	return ellapsedSeconds() - _lastTime;
 }
@@ -52,7 +51,7 @@ DemoTimer::deltaTime() noexcept
 //-----------------------------------------------------------------------------
 
 bool
-DemoTimer::updateDraw() noexcept
+Timer::update() noexcept
 {
 	if( deltaTime() >= _refreshTime )
 	{
@@ -61,4 +60,3 @@ DemoTimer::updateDraw() noexcept
 	}
 	return false;
 }
-

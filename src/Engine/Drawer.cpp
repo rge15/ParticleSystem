@@ -12,7 +12,6 @@ Drawer::Drawer( uint32_t* p_buffer )
 void
 Drawer::Draw() noexcept
 {
-	
 	_timer.reset();
 	//Draw Logic
 	updateDraw();

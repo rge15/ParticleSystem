@@ -7,7 +7,7 @@
 class Drawer
 {
 	private:
-		DemoTimer	_timer { 60 };
+		Timer	_timer { 60 };
 		uint32_t&	_buffer;
 
 		void

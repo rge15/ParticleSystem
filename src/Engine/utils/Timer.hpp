@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 
-struct DemoTimer
+struct Timer
 {
 	public:
 		using clock = std::chrono::steady_clock;
@@ -9,21 +9,20 @@ struct DemoTimer
 
 		timePoint _initTime = clock::now();
 
+		//TODO : Esto alomejor sobra
 		int _totalFXTime { 0 };
 
-		//TODO : Alomejor el framerate dependeria del buffer y no del engine(Timer)
-		int _frameRate { 60 };
-		double _refreshTime { 1.f / _frameRate };
+		double _refreshTime { 1.f / 60 };
 
 		double _lastTime { 0.f };
 
 	public:
-		/**	@brief Constructor for class DemoTimer */
+		/**	@brief Constructor for class Timer */
 		explicit
-		DemoTimer( int p_frameRate ) noexcept;
+		Timer( int p_frameRate = 60 ) noexcept;
 
-		/**	@brief Default destructor for class DemoTimer	*/
-		~DemoTimer() = default;
+		/**	@brief Default destructor for class Timer	*/
+		~Timer() = default;
 
 		/**
 		 * 	@brief Gives the total ellapsed time in nanoseconds
@@ -47,7 +46,7 @@ struct DemoTimer
 		 * 	@return Delta time since the last rendered frame
 		*/
 		double
-		deltaTime() noexcept;
+		deltaTime() const noexcept;
 	
 		/**
 		 * 	@brief Check if it has to render a frame
@@ -55,7 +54,7 @@ struct DemoTimer
 		 * 	@return True if it passed the _refreshTime
 		*/
 		bool
-		updateDraw() noexcept;
+		update() noexcept;
 
 		/**
 		 * 	@brief Resets the timer ans sets a new framerate if wanted
