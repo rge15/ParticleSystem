@@ -10,6 +10,7 @@ class Drawer
 		Timer	_timer { 60 };
 		uint32_t&	_buffer;
 
+
 		void
 		updateDraw() noexcept;
 

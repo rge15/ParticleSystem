@@ -5,7 +5,7 @@
 namespace Benchmark
 {
 	using namespace std::chrono;	
-	using Clock = std::conditional_t< high_resolution_clock::is_steady, high_resolution_clock, steady_clock> ;
+	using BenchClock = std::conditional_t< high_resolution_clock::is_steady, high_resolution_clock, steady_clock> ;
 
 	class BenchTimer
 	{	
@@ -21,7 +21,7 @@ namespace Benchmark
 			std::size_t _framesWritting { 0 };
 			Array<FrameTime,10> _timerData;
 
-			time_point<Clock> _start;
+			time_point<BenchClock> _start;
 
 			void
 			avgTheValues() noexcept;
@@ -43,6 +43,6 @@ namespace Benchmark
 			startRecord() noexcept;
 			
 			void
-			stopRecord( time_point<Clock> p_timeStoped ) noexcept;
+			stopRecord( time_point<BenchClock> p_timeStoped ) noexcept;
 	};
 }

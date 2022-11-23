@@ -11,7 +11,7 @@ Timer::Timer( int p_frameRate ) noexcept
 double
 Timer::ellapsedTime() const noexcept
 {
-	return ( Timer::clock::now() - _initTime ).count();
+	return ( demoClock::now() - _initTime ).count();
 }
 
 //-----------------------------------------------------------------------------
@@ -24,9 +24,8 @@ Timer::reset( int p_frameRate ) noexcept
 	{
 		_refreshTime = 1.f/p_frameRate;
 	}
-	_initTime = clock::now();
+	_initTime = demoClock::now();
 	_lastTime = 0.f ;
-	_totalFXTime = 0;
 }
 
 //-----------------------------------------------------------------------------

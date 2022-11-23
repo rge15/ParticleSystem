@@ -1,16 +1,10 @@
 #pragma once
-#include <chrono>
+#include <utilities/chronoTypeAlias.hpp>
 
 struct Timer
 {
 	public:
-		using clock = std::chrono::steady_clock;
-		using timePoint = std::chrono::time_point<clock>;
-
-		timePoint _initTime = clock::now();
-
-		//TODO : Esto alomejor sobra
-		int _totalFXTime { 0 };
+		timePoint _initTime = demoClock::now();
 
 		double _refreshTime { 1.f / 60 };
 
@@ -63,4 +57,7 @@ struct Timer
 		*/
 		void
 		reset( int p_frameRate = 0 ) noexcept;
+
+		void
+		setManualRefreshRate( double p_refreshRate) noexcept { _refreshTime = p_refreshRate; };
 };

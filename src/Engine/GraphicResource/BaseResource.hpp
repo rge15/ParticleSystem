@@ -1,5 +1,5 @@
 #pragma once
-
+#include <utilities/alias.hpp>
 
 namespace Graphics
 {
@@ -8,13 +8,10 @@ namespace Graphics
 	public:
 		explicit BaseResource() = default;
 	
-		virtual ~BaseResource();
-	
-		void
-		virtual Init() noexcept = 0;
+		virtual ~BaseResource() = default;
 
 		void
-		virtual Draw() noexcept = 0;
+		virtual Draw( uint32_t* bufferStart, uint32_t p_width, uint32_t p_height ) const noexcept = 0;
 	};
 
 }

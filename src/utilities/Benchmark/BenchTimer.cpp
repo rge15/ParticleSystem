@@ -20,11 +20,11 @@ namespace Benchmark
 	void
 	BenchTimer::startRecord() noexcept
 	{
-		_start = Clock::now();
+		_start = BenchClock::now();
 	}
 	
 	void
-	BenchTimer::stopRecord( time_point<Clock> p_timeStoped ) noexcept
+	BenchTimer::stopRecord( time_point<BenchClock> p_timeStoped ) noexcept
 	{
 		auto ellapsedTime = duration_cast<milliseconds>(p_timeStoped - _start);
 		

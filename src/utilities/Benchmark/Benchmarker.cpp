@@ -31,7 +31,7 @@ namespace Benchmark
 	void
 	Benchmarker::stopTimer() noexcept
 	{
-		auto endTime = Clock::now();
+		auto endTime = BenchClock::now();
 
 		auto timer = _listenerTimers.top();
 		_listenerTimers.pop();

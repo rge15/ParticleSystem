@@ -1,6 +1,13 @@
 #pragma once
 #include <utilities/config.hpp>
 
+// ############## Non-Template Alias ############## 
+
+using Size_t = std::size_t;
+
+
+// ############## Template Alias ############## 
+
 template <typename T>
 using Vector = std::vector<T>;
 

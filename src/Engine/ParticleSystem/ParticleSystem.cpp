@@ -13,9 +13,9 @@ namespace ParticleSystem
 	//-------------------------------------------------------------------------
 
 	Emitter&
-	ParticleSystem::addEmitter( Emitter&& p_emitter) noexcept
+	ParticleSystem::addEmitter( ) noexcept
 	{
-		_emiters.push_back( std::make_unique<Emitter>(p_emitter) );
+		_emiters.push_back( std::make_unique<Emitter>() );
 
 		return *_emiters.back().get();		
 	}
@@ -30,7 +30,7 @@ namespace ParticleSystem
 		{
 			for(auto& emitter : _emiters)
 			{
-				// emitter.get()->update();
+				emitter.get()->update();
 			}
 		}
 	}
