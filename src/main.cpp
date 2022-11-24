@@ -17,19 +17,20 @@ int main()
 
 	pEmitter.setResource( pSprite );
 
-	pEmitter.addEmmiterSpawn<ParticleSystem::RatioSpawner>( 1, 2.f );
+	pEmitter.addEmitterSpawn<ParticleSystem::RatioSpawner>( 1, 2.f );
 
 	//? Se añaden bien, ahora falta comprobar que funcionen bien
-	pEmitter.addEmmiterInit<ParticleSystem::ConstPosInit>( 10 , 20  );
-	pEmitter.addEmmiterInit<ParticleSystem::ConstSpeedInit>( 1.f,2.f );
-	pEmitter.addEmmiterInit<ParticleSystem::ConstColorInit>( .5f,1.f,0.f,1.f );
-	pEmitter.addEmmiterInit<ParticleSystem::ConstLifeInit>( 1.f );
+	pEmitter.addEmitterInit<ParticleSystem::ConstPosInit>( 10 , 20  );
+	pEmitter.addEmitterInit<ParticleSystem::ConstSpeedInit>( 4.f,0.f );
+	pEmitter.addEmitterInit<ParticleSystem::ConstColorInit>( .5f,1.f,0.f,1.f );
+	pEmitter.addEmitterInit<ParticleSystem::ConstLifeInit>( 1.f );
+
+	pEmitter.addEmitterUpdate<ParticleSystem::ApplySpeedUpdater>();
 
 	while (true)
 	{
 		draw.Draw();
 	}
-	
 
 	return 0;
 }

@@ -2,6 +2,8 @@
 #include <Engine/GraphicResource/ParticleSprite.hpp>
 #include <Engine/ParticleSystem/Behaviours/EmitterInitiator.hpp>
 #include <Engine/ParticleSystem/Behaviours/EmitterSpawner.hpp>
+#include <Engine/ParticleSystem/Behaviours/EmitterUpdater.hpp>
+
 #include <Engine/DataTypes/Position.hpp>
 namespace ParticleSystem
 {
@@ -13,10 +15,8 @@ namespace ParticleSystem
 		Position _pos {};
 
 		EmitterSpawner _spawner;
-		//TODO : Estructurar el particle Emmiter en Initer y Updater, y llevarse los tagDispatching y las cosas a los respectivos
 		EmitterInitiator _initiator;
-		// EmmiterUpdater _updater;
-		// Vector<uniqPtr<BaseUpdater>> _inits;
+		EmitterUpdater _updater;
 
 		Vector<Particle> _particles;
 
@@ -34,11 +34,15 @@ namespace ParticleSystem
 	
 		template<initerBehaviour T, typename... args>
 		T&
-		addEmmiterInit(args&&... p_params);
+		addEmitterInit(args&&... p_params);
+
+		template<updateBehaviour T, typename... args>
+		T&
+		addEmitterUpdate(args&&... p_params);
 
 		template<spawnBehaviour T, typename... args>
 		T&
-		addEmmiterSpawn(args&&... p_params);
+		addEmitterSpawn(args&&... p_params);
 
 	};
 

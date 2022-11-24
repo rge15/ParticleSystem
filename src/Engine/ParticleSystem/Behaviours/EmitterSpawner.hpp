@@ -3,7 +3,7 @@
 #include <Engine/utils/metaProggraming.hpp> 
 #include <Engine/utils/concepts.hpp>
 #include <Engine/ParticleSystem/Particle.hpp>
-#include <Engine/ParticleSystem/Behaviours/Spawn/initSpawners.hpp>
+#include <Engine/ParticleSystem/Behaviours/Spawn/spawnerIncludes.hpp>
 
 namespace ParticleSystem
 {
