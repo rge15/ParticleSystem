@@ -2,8 +2,8 @@
 
 namespace ParticleSystem
 {
-	ConstPosInit::ConstPosInit(float p_x, float p_y, float p_z ) noexcept
-	: _x { p_x }, _y { p_y }, _z { p_z }
+	ConstPosInit::ConstPosInit(int p_x, int p_y ) noexcept
+	: _x { p_x }, _y { p_y }
 	{
 	}
 
@@ -13,9 +13,8 @@ namespace ParticleSystem
 	void
 	ConstPosInit::init(Particle& p_particle) const noexcept
 	{
-		p_particle._posX = _x;
-		p_particle._posY = _y;
-		p_particle._posZ = _z;
+		p_particle._pos.x = _x;
+		p_particle._pos.y = _y;
 	}
 
 }

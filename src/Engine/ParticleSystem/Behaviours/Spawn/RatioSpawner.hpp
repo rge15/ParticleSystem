@@ -4,7 +4,7 @@
 
 namespace ParticleSystem
 {
-	class RatioSpawner : BaseSpawner
+	class RatioSpawner : public BaseSpawner
 	{
 	private:
 

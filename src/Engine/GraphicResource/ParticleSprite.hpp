@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine/GraphicResource/Sprite.hpp>
-
+#include <Engine/ParticleSystem/Particle.hpp>
+#include <Engine/DemoEngineConfig.hpp>
 namespace Graphics
 {
 	class ParticleSprite : public Sprite
@@ -8,13 +9,12 @@ namespace Graphics
 	private:
 	public:
 		ParticleSprite(std::string p_fileSrc);
+
 		~ParticleSprite() = default;
 	
 		void
 		drawParticle(
-			uint32_t* p_buffer, uint32_t p_width, uint32_t p_height, 
-			float p_x, float p_y, float p_r,
-			float p_g , float p_b, float p_a 
+			uint32_t* p_buffer, const Position& p_emitterPos ,const ParticleSystem::Particle& p_particle
 		) const noexcept;
 	
 	};

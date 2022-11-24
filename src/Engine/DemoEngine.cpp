@@ -3,7 +3,8 @@
 
 DemoEngine::DemoEngine() noexcept
 {
-	ptc_open("MK I - BitBoy 1st demo", _widthScr, _heightScr);
+	ptc_open("Particle System - BitBoy", _widthScr, _heightScr);
+	memset( _buffer, 0, sizeof(_buffer) );
 }
 
 //-----------------------------------------------------------------------------

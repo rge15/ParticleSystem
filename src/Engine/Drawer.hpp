@@ -3,6 +3,7 @@
 #include <utilities/alias.hpp>
 #include <Engine/utils/Timer.hpp>
 #include <Engine/DrawerSrc.hpp>
+#include <Engine/ParticleSystem/ParticleSystem.hpp>
 
 class Drawer
 {
@@ -10,9 +11,10 @@ class Drawer
 		Timer	_timer { 60 };
 		uint32_t&	_buffer;
 
-
 		void
 		updateDraw() noexcept;
+
+		Vector<uniqPtr<ParticleSystem::ParticleSystem>> _pSystems {};
 
 	public:
 		uniqPtr<DrawerSrc> _src = std::make_unique<DrawerSrc>();
@@ -31,4 +33,7 @@ class Drawer
 		*/
 		void
 		Draw() noexcept;
+
+		ParticleSystem::ParticleSystem&
+		addParticleSystem() noexcept;
 };

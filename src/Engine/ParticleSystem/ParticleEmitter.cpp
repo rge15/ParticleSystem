@@ -4,19 +4,28 @@ namespace ParticleSystem
 {
 
 	void
-	Emitter::setResource( Graphics::BaseResource& p_resource ) noexcept
+	Emitter::setResource( Graphics::ParticleSprite& p_resource ) noexcept
 	{
 		_resource = &p_resource;
 	}
 
 	void
-	Emitter::update() noexcept
+	Emitter::update(uint32_t* p_buffer) noexcept
 	{
 		//Llamar a spawner de partículas
-		
-		//Llamar a modifiers de partículas
-	
-		//Llamar a borrador de partículas
+		for(auto& spawner : _spawner._spawners)
+		{
+			spawner.get()->spawn( _particles, _initiator._inits );
+		}
+
+		//Llamar a updaters de partículas
+
+		//Dibujar particulas
+		for(auto& particle : _particles)
+		{
+			_resource->drawParticle( p_buffer,  _pos, particle );
+		}
+		//Llamar a borrador de partículas y a reordenación
 	}
 
 

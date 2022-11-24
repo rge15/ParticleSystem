@@ -15,11 +15,11 @@ namespace ParticleSystem
 
 	//Template Overloadings
 	ConstPosInit&
-	EmitterInitiator::addInit( MP::Class<ConstPosInit> , float p_x, float p_y, float p_z )
+	EmitterInitiator::addInit( MP::Class<ConstPosInit> , int p_x, int p_y )
 	{
 		std::cout << " Position \n";
 
-		_inits.push_back(std::make_unique<ConstPosInit>( p_x, p_y, p_z ));		
+		_inits.push_back(std::make_unique<ConstPosInit>( p_x, p_y ));		
 
 		auto& initer = static_cast<ConstPosInit&>(*_inits.back().get());
 
@@ -39,11 +39,11 @@ namespace ParticleSystem
 	}
 
 	ConstSpeedInit&
-	EmitterInitiator::addInit( MP::Class<ConstSpeedInit> , float p_speedX, float p_speedY, float p_speedZ )
+	EmitterInitiator::addInit( MP::Class<ConstSpeedInit> , float p_speedX, float p_speedY )
 	{
 		std::cout << " Speed \n";
 
-		_inits.push_back(std::make_unique<ConstSpeedInit>( p_speedX, p_speedY, p_speedZ ));
+		_inits.push_back(std::make_unique<ConstSpeedInit>( p_speedX, p_speedY ));
 	
 		auto& initer = static_cast<ConstSpeedInit&>(*_inits.back().get());
 	

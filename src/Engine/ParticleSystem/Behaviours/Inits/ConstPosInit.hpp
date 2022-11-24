@@ -7,9 +7,9 @@ namespace ParticleSystem
 	class ConstPosInit : public BaseInit
 	{
 	private:
-		float _x { 0.f }, _y { 0.f }, _z { 0.f};
+		int _x { 0 }, _y { 0 };
 	public:
-		ConstPosInit(float p_x = 0.f, float p_y = 0.f, float p_z = 0.f ) noexcept;
+		ConstPosInit( int p_x = 0 , int p_y = 0 ) noexcept;
 		~ConstPosInit() = default;
 
 		void

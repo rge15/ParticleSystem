@@ -24,13 +24,13 @@ namespace ParticleSystem
 	//-------------------------------------------------------------------------
 
 	void
-	ParticleSystem::updateSystem() noexcept
+	ParticleSystem::updateSystem( uint32_t* p_buffer ) noexcept
 	{
 		if( _timer.update() )
 		{
 			for(auto& emitter : _emiters)
 			{
-				emitter.get()->update();
+				emitter.get()->update( p_buffer );
 			}
 		}
 	}

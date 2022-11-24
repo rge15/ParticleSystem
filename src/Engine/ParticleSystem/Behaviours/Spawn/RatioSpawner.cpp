@@ -20,8 +20,12 @@ namespace ParticleSystem
 	{
 		if(_ratioSpawnerTimer.update())
 		{
-			//TODO : Q reciba los initers y las partículas
-			//TODO : Añade partícula y la inicia
+			for(int i = 0 ; i < _spawnParticlesNum; i++)
+			{
+				auto& particle = p_particles.emplace_back();
+				for(auto& initer : p_initBehaviour)
+					initer.get()->init( particle );
+			}
 		}
 	}
 

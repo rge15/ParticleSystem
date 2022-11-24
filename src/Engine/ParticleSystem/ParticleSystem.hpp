@@ -20,12 +20,12 @@ namespace ParticleSystem
 		ParticleSystem( int p_updateRate = 60 );
 		~ParticleSystem() = default;
 
-		//Aquí habrá que ver el constructor de copia de cada emiiter pq sinos va a ser locura reutilizar emmiters
+		//Aquí habrá que ver el constructor de copia de cada emiter pq sinos va a ser locura reutilizar emmiters
 		Emitter&
-		addEmitter(  ) noexcept;
+		addEmitter() noexcept;
 
 		void
-		updateSystem() noexcept;
+		updateSystem( uint32_t* p_buffer ) noexcept;
 
 	};
 
