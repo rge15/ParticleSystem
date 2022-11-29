@@ -4,13 +4,6 @@
 namespace ParticleSystem
 {
 
-	ParticleSystem::ParticleSystem( int p_updateRate )
-	: _updateRate { p_updateRate }
-	{
-	}
-	
-	//-------------------------------------------------------------------------
-	//-------------------------------------------------------------------------
 
 	Emitter&
 	ParticleSystem::addEmitter( ) noexcept
@@ -27,13 +20,11 @@ namespace ParticleSystem
 	ParticleSystem::updateSystem( uint32_t* p_buffer ) noexcept
 	{
 		//TODO : Debería actualizarse por un lado y dibujarse siempre que se pida
-		// if( _timer.update() )
-		// {
-			for(auto& emitter : _emiters)
-			{
-				emitter.get()->update( p_buffer );
-			}
-		// }
+		for(auto& emitter : _emiters)
+		{
+			emitter.get()->update( p_buffer );
+		}
+		
 	}
 
 

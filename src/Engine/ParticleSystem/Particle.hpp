@@ -11,7 +11,9 @@ namespace ParticleSystem
 		Particle(/* args */) = default;
 		~Particle() = default;
 
-		timePoint _initLife = demoClock::now();
+		const timePoint _initLife = demoClock::now();
+		float _totalLifeTime{ 0.f };
+		float _normalizedLifeTime{ 0.f };
 		float _lifeTime{ 0.f };
 
 		Position _pos {};

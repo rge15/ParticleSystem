@@ -30,8 +30,8 @@ namespace ParticleSystem
 		setResource( Graphics::ParticleSprite& p_resource ) noexcept;
 
 		void
-		update( uint32_t* p_buffer ) noexcept;
-	
+		update( uint32_t* const p_buffer ) noexcept;
+
 		template<initerBehaviour T, typename... args>
 		T&
 		addEmitterInit(args&&... p_params);

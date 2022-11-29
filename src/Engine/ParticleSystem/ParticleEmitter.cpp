@@ -10,7 +10,7 @@ namespace ParticleSystem
 	}
 
 	void
-	Emitter::update(uint32_t* p_buffer) noexcept
+	Emitter::update( uint32_t* const p_buffer ) noexcept
 	{
 		//Llamar a spawner de partículas
 		for(auto& spawner : _spawner._spawners)
@@ -27,9 +27,8 @@ namespace ParticleSystem
 			_resource->drawParticle( p_buffer,  _pos, particle );
 		}
 
-
 		//Llamar a borrador de partículas y a reordenación
-	}
-
+		
+	}	
 
 }

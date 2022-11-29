@@ -25,8 +25,10 @@ namespace ParticleSystem
 
 	private:
 
-		inline ApplySpeedUpdater&
-		addUpdater( MP::Class<ApplySpeedUpdater> ) noexcept;
+		//No params Update Class
+		template<updateBehaviour T>
+		T&
+		addUpdater( MP::Class<T> ) noexcept;
 
 	};
 }

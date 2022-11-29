@@ -14,7 +14,7 @@ namespace ParticleSystem
 	void
 	ConstLifeInit::init(Particle& p_particle) const noexcept
 	{
-		p_particle._lifeTime = _initLifeTime;
+		p_particle._totalLifeTime = _initLifeTime;
 	}
 
 }

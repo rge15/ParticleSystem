@@ -23,8 +23,9 @@ int main()
 	pEmitter.addEmitterInit<ParticleSystem::ConstPosInit>( 10 , 20  );
 	pEmitter.addEmitterInit<ParticleSystem::ConstSpeedInit>( 4.f,0.f );
 	pEmitter.addEmitterInit<ParticleSystem::ConstColorInit>( .5f,1.f,0.f,1.f );
-	pEmitter.addEmitterInit<ParticleSystem::ConstLifeInit>( 1.f );
+	pEmitter.addEmitterInit<ParticleSystem::ConstLifeInit>( 2.f );
 
+	pEmitter.addEmitterUpdate<ParticleSystem::TimeUpdater>();
 	pEmitter.addEmitterUpdate<ParticleSystem::ApplySpeedUpdater>();
 
 	while (true)

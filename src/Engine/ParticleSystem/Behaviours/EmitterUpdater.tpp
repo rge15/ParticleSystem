@@ -10,12 +10,14 @@ namespace ParticleSystem
 		return addUpdater( MP::Class<T>{}, std::forward<args>(p_params)... );
 	}
 
-	inline ApplySpeedUpdater&
-	EmitterUpdater::addUpdater( MP::Class<ApplySpeedUpdater> ) noexcept
+	//No params Update Class
+	template<updateBehaviour T>
+	T&
+	EmitterUpdater::addUpdater( MP::Class<T> ) noexcept
 	{
-		_updates.push_back(std::make_unique<ApplySpeedUpdater>());
+		_updates.push_back(std::make_unique<T>());
 
-		auto& updater = static_cast<ApplySpeedUpdater&>( *_updates.back().get() );
+		auto& updater = static_cast<T&>( *_updates.back().get() );
 
 		return updater;
 	}
