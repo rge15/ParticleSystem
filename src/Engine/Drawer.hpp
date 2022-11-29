@@ -9,21 +9,14 @@ class Drawer
 {
 	private:
 		Timer	_timer { 60 };
-		uint32_t&	_buffer;
-
-		void
-		updateDraw() noexcept;
 
 		Vector<uniqPtr<ParticleSystem::ParticleSystem>> _pSystems {};
 
 	public:
 		uniqPtr<DrawerSrc> _src = std::make_unique<DrawerSrc>();
 
-		/**	@brief Constructor of Drawer class
-		 * 
-		 * 	@param p_buffer Pointer to the start of the buffer to draw in
-		 */
-		Drawer( uint32_t* p_buffer );
+		/**	@brief Constructor of Drawer class */
+		Drawer() = default;
 
 		/**	@brief Default destructor for Drawe class */
 		~Drawer() = default;
@@ -32,7 +25,7 @@ class Drawer
 		 * 	@brief It draws all the FXs on _FXs
 		*/
 		void
-		Draw() noexcept;
+		Draw( uint32_t& p_buffer ) noexcept;
 
 		ParticleSystem::ParticleSystem&
 		addParticleSystem() noexcept;

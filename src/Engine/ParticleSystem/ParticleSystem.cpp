@@ -26,13 +26,14 @@ namespace ParticleSystem
 	void
 	ParticleSystem::updateSystem( uint32_t* p_buffer ) noexcept
 	{
-		if( _timer.update() )
-		{
+		//TODO : Debería actualizarse por un lado y dibujarse siempre que se pida
+		// if( _timer.update() )
+		// {
 			for(auto& emitter : _emiters)
 			{
 				emitter.get()->update( p_buffer );
 			}
-		}
+		// }
 	}
 
 

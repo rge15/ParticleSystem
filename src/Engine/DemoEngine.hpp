@@ -10,9 +10,15 @@ class DemoEngine
 {
 	public :
 
-		uint32_t _buffer[ _widthScr * _heightScr ];
+		uint32_t _buffer1[ _widthScr * _heightScr ];
+		uint32_t _buffer2[ _widthScr * _heightScr ];
 
-		uniqPtr<Drawer> _drawer { std::make_unique<Drawer>( _buffer ) };
+		uint32_t* _drawBuffer { _buffer1 };
+		uint32_t* _readBuffer { _buffer2 };
+
+		uniqPtr<Drawer> _drawer { std::make_unique<Drawer>() };
+
+		Timer _timer { 60 };
 
 	public:
 		/**	@brief Opens the window to draw in */
@@ -35,6 +41,14 @@ class DemoEngine
 		{
 			return *_drawer.get();
 		}
+
+	private:
+
+		void
+		updateBuffer() noexcept;
+
+		void
+		swapDoubleBuffer() noexcept;
 
 };
 

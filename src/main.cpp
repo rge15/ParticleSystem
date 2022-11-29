@@ -13,7 +13,7 @@ int main()
 
 	auto& pEmitter = pSystem.addEmitter();
 
-	auto pSprite = Graphics::ParticleSprite("rsc/Particle.png");
+	auto pSprite = Graphics::ParticleSprite("rsc/particle.png");
 
 	pEmitter.setResource( pSprite );
 
@@ -29,7 +29,7 @@ int main()
 
 	while (true)
 	{
-		draw.Draw();
+		engine.Draw();
 	}
 
 	return 0;
