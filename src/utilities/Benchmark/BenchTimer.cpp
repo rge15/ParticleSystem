@@ -26,7 +26,7 @@ namespace Benchmark
 	void
 	BenchTimer::stopRecord( time_point<BenchClock> p_timeStoped ) noexcept
 	{
-		auto ellapsedTime = duration_cast<milliseconds>(p_timeStoped - _start);
+		auto ellapsedTime = duration_cast<TimeMeasure>(p_timeStoped - _start);
 		
 		_values.push_back( ellapsedTime );
 
@@ -38,10 +38,10 @@ namespace Benchmark
 	void
 	BenchTimer::avgTheValues() noexcept
 	{
-		milliseconds::rep avgTime { milliseconds::zero().count() };
-		milliseconds::rep max { milliseconds::min().count() };
-		milliseconds::rep min { milliseconds::max().count() };
-		milliseconds::rep valueCount;
+		TimeMeasure::rep avgTime { TimeMeasure::zero().count() };
+		TimeMeasure::rep max { TimeMeasure::min().count() };
+		TimeMeasure::rep min { TimeMeasure::max().count() };
+		TimeMeasure::rep valueCount;
 		
 		for(auto& value : _values)
 		{
@@ -66,7 +66,7 @@ namespace Benchmark
 	}
 
 	void
-	BenchTimer::addFramerData( milliseconds::rep max, milliseconds::rep min, milliseconds::rep avgTime ) noexcept
+	BenchTimer::addFramerData( TimeMeasure::rep max, TimeMeasure::rep min, TimeMeasure::rep avgTime ) noexcept
 	{
 		_timerData[ _framesWritting++ ] = FrameTime(max, min, avgTime);
 		if(_framesWritting >= _timerData.size())

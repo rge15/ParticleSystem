@@ -50,14 +50,16 @@ namespace Graphics
 			g = value;
 			value >>= 8;
 			b = value;
-			value += r;
+			value >>= 8;
 			value <<= 8;
-			value += g;
+			value |= r;
 			value <<= 8;
-			value += b;
+			value |= g;
+			value <<= 8;
+			value |= b;
 			_data[i] = value;
 		}
-
+	
 	}
 
 //-----------------------------------------------------------------------------

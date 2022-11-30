@@ -37,11 +37,68 @@ namespace Graphics
 		for( i = iStart ; i < iEnd ; i++)
 			for( j = jStart ; j< jEnd ; j++)
 			{
-				//TODO : Aquí pillar el {_data[ i * _width + j]} y procesarlo con el color de la particula
+				Color pColor = p_particle._color;
+				//TODO : Aquí pillar el {_data[i * _width + j]} y procesarlo con el color de la particula
+
+				uint32_t particleSprite = _data[i * _width + j];
+				uint8_t srcA, srcR, srcG, srcB;
+				srcB = particleSprite;
+				particleSprite >>= 8;
+				srcG = particleSprite;
+				particleSprite >>= 8;
+				srcR = particleSprite;
+				particleSprite >>= 8;
+				srcA = particleSprite;
+				
+				//NEW ALPHA
+				srcA = uint16_t(srcA * pColor.A) >> 8;
+				//NEW COLOR
+				srcR = uint16_t(srcR * pColor.R) >> 8;
+				srcG = uint16_t(srcG * pColor.G) >> 8;
+				srcB = uint16_t(srcB * pColor.B) >> 8;
+
+				srcR = uint16_t(srcR * srcA) >> 8;
+				srcG = uint16_t(srcG * srcA) >> 8;
+				srcB = uint16_t(srcB * srcA) >> 8;
 
 				//TODO : Tambien pillar le valor de p_buffer y hacer el alphaBlend con el valor calculado arriba
+				uint32_t* pScreen = &p_buffer[ (finalY + i - iStart) * Demoengine::Config::_widthScr + (finalX + j - jStart) ];
+				uint32_t valScreen = *pScreen;
+				uint8_t dstA, dstR, dstG, dstB;
 
-				p_buffer[ (finalY + i - iStart) * Demoengine::Config::_widthScr + (finalX + j - jStart) ] = _data[ i * _width + j];
+				dstB = valScreen;
+				valScreen >>= 8;
+				dstG = valScreen;
+				valScreen >>= 8;
+				dstR = valScreen;
+
+				dstA = uint8_t(srcA^0XFF);
+				
+				dstR = uint16_t(dstR * dstA) >> 8;
+				dstG = uint16_t(dstG * dstA) >> 8;
+				dstB = uint16_t(dstB * dstA) >> 8;
+
+				srcR += dstR;
+				if(srcR < dstR)
+					srcR = 255;
+
+				srcG += dstG;
+				if(srcG < dstG)
+					srcG = 255;
+				
+				srcB += dstB;
+				if(srcB < dstB)
+					srcB = 255;
+				
+				uint32_t finalCol = srcA;
+				finalCol <<= 8;
+				finalCol |= srcR;
+				finalCol <<= 8;
+				finalCol |= srcG;
+				finalCol <<= 8;
+				finalCol |= srcB;
+
+				*pScreen = finalCol; 
 			}
 		//Lógica de dibujado con el blendeo de sprites
 	}

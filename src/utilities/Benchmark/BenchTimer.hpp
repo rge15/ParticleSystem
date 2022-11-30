@@ -6,20 +6,21 @@ namespace Benchmark
 {
 	using namespace std::chrono;	
 	using BenchClock = std::conditional_t< high_resolution_clock::is_steady, high_resolution_clock, steady_clock> ;
+	using TimeMeasure = nanoseconds;
 
 	class BenchTimer
 	{	
 		// maxFrameTime, minFrameTime, avgFrameTime
-		using FrameTime = Tuple<milliseconds::rep, milliseconds::rep, milliseconds::rep>;
+		using FrameTime = Tuple<TimeMeasure::rep, TimeMeasure::rep, TimeMeasure::rep>;
 		
 		private:
 			std::string _name;
 
 			std::size_t _valuesToAvg;
-			Vector<milliseconds> _values;
+			Vector<TimeMeasure> _values;
 
 			std::size_t _framesWritting { 0 };
-			Array<FrameTime,10> _timerData;
+			Array<FrameTime,20> _timerData;
 
 			time_point<BenchClock> _start;
 
@@ -27,7 +28,7 @@ namespace Benchmark
 			avgTheValues() noexcept;
 
 			void
-			addFramerData( milliseconds::rep max, milliseconds::rep min, milliseconds::rep avgTime ) noexcept;
+			addFramerData( TimeMeasure::rep max, TimeMeasure::rep min, TimeMeasure::rep avgTime ) noexcept;
 			
 			void
 			cleanValues() noexcept;

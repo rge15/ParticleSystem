@@ -24,6 +24,11 @@ namespace ParticleSystem
 
 	private:
 		//Template Overloadings
+		template<initerBehaviour T>
+		inline T&
+		addInit( MP::Class<T> );
+		
+		//Template Overloadings
 		inline ConstPosInit&
 		addInit( MP::Class<ConstPosInit> , int p_x, int p_y );
 
@@ -35,6 +40,9 @@ namespace ParticleSystem
 
 		inline ConstLifeInit&
 		addInit( MP::Class<ConstLifeInit> , float p_life );
+
+		inline SquarePosInit&
+		addInit( MP::Class<SquarePosInit> , int p_minx, int p_maxx, int p_miny, int p_maxy );
 
 	};	
 

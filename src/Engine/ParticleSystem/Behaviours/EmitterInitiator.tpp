@@ -13,6 +13,18 @@ namespace ParticleSystem
 		return initer;
 	}
 
+	template<initerBehaviour T>
+	inline T&
+	EmitterInitiator::addInit( MP::Class<T> )
+	{
+		_inits.push_back(std::make_unique<T>());		
+
+		auto& initer = static_cast<T&>(*_inits.back().get());
+
+		return initer;
+	}
+
+
 	//Template Overloadings
 	ConstPosInit&
 	EmitterInitiator::addInit( MP::Class<ConstPosInit> , int p_x, int p_y )
@@ -58,6 +70,18 @@ namespace ParticleSystem
 		_inits.push_back(std::make_unique<ConstLifeInit>( p_life ));
 	
 		auto& initer = static_cast<ConstLifeInit&>(*_inits.back().get());
+
+		return initer;
+	}
+
+	SquarePosInit&
+	EmitterInitiator::addInit( MP::Class<SquarePosInit> , int p_minx, int p_maxx, int p_miny, int p_maxy )
+	{
+		std::cout << " SquarePos \n";
+
+		_inits.push_back(std::make_unique<SquarePosInit>( p_minx, p_maxx, p_miny, p_maxy ));
+	
+		auto& initer = static_cast<SquarePosInit&>(*_inits.back().get());
 
 		return initer;
 	}

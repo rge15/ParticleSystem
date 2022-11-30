@@ -28,7 +28,20 @@ namespace ParticleSystem
 		}
 
 		//Llamar a borrador de partículas y a reordenación
-		
-	}	
+		killOldParticles();
+	}
+
+	void
+	Emitter::killOldParticles() noexcept
+	{
+
+		for(auto iter = _particles.begin(); iter != _particles.end(); iter++)
+		{
+			if(iter.base()->_currLifeTime >= iter.base()->_totalLifeTime )
+				_particles.erase(iter);
+		}
+
+	}
+
 
 }

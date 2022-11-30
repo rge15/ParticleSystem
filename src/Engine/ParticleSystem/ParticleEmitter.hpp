@@ -43,6 +43,11 @@ namespace ParticleSystem
 		template<spawnBehaviour T, typename... args>
 		T&
 		addEmitterSpawn(args&&... p_params);
+	private:
+		
+		void
+		killOldParticles() noexcept;
+
 
 	};
 

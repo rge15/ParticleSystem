@@ -7,8 +7,8 @@ namespace ParticleSystem
 	{
 		float lifeTime = std::chrono::duration_cast<std::chrono::milliseconds>(demoClock::now() - p_particle._initLife).count()/1000.;
 
-		p_particle._lifeTime = lifeTime;
-		p_particle._normalizedLifeTime = lifeTime / p_particle._totalLifeTime;
+		p_particle._currLifeTime = lifeTime;
+		p_particle._currNormalizedLifeTime = lifeTime / p_particle._totalLifeTime;
 	}
 
 }
