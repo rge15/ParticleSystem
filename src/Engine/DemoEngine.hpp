@@ -3,12 +3,15 @@
 #include <utilities/alias.hpp>
 #include <Engine/DemoEngineConfig.hpp>
 #include "Drawer.hpp"
+#include <utilities/Benchmark/Benchmarker.hpp>
+
 
 using namespace Demoengine::Config;
 
 class DemoEngine
 {
 	public :
+		uniqPtr<Benchmark::Benchmarker> bench = std::make_unique<Benchmark::Benchmarker>();
 
 		uint32_t _buffer1[ _widthScr * _heightScr ];
 		uint32_t _buffer2[ _widthScr * _heightScr ];

@@ -6,7 +6,7 @@ namespace Benchmark
 {
 	using namespace std::chrono;	
 	using BenchClock = std::conditional_t< high_resolution_clock::is_steady, high_resolution_clock, steady_clock> ;
-	using TimeMeasure = nanoseconds;
+	using TimeMeasure = microseconds;
 
 	class BenchTimer
 	{	
@@ -17,7 +17,7 @@ namespace Benchmark
 			std::string _name;
 
 			std::size_t _valuesToAvg;
-			Vector<TimeMeasure> _values;
+			Vector<TimeMeasure::rep> _values;
 
 			std::size_t _framesWritting { 0 };
 			Array<FrameTime,20> _timerData;

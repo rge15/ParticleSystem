@@ -1,5 +1,4 @@
 #include <Engine/DemoEngine.hpp>
-#include <utilities/Benchmark/Benchmarker.hpp>
 #include <Engine/ParticleSystem/ParticleSystem.hpp>
 #include <Engine/GraphicResource/ParticleSprite.hpp>
 
@@ -7,7 +6,6 @@ int main()
 {
 	DemoEngine engine{};
 	Drawer& draw = engine.getDrawer();
-	uniqPtr<Benchmark::Benchmarker> bench = std::make_unique<Benchmark::Benchmarker>();
 
 	auto& pSystem = draw.addParticleSystem();
 
@@ -15,7 +13,7 @@ int main()
 
 	auto pSprite = Graphics::ParticleSprite("rsc/particle1.png");
 	pEmitter.setResource( pSprite );
-	pEmitter.addEmitterSpawn<ParticleSystem::RatioSpawner>( 3, .2f );
+	pEmitter.addEmitterSpawn<ParticleSystem::RatioSpawner>( 10, .1f );
 	pEmitter.addEmitterInit<ParticleSystem::SquarePosInit>( 0, 10 , 0, 400);
 //	pEmitter.addEmitterInit<ParticleSystem::ConstPosInit>( 10 , 20  );
 	pEmitter.addEmitterInit<ParticleSystem::ConstSpeedInit>( 2.5f,0.f );
@@ -30,7 +28,7 @@ int main()
 
 	auto pSprite2 = Graphics::ParticleSprite("rsc/particle.png");
 	pEmitter2.setResource( pSprite2 );
-	pEmitter2.addEmitterSpawn<ParticleSystem::RatioSpawner>( 1, .1f );
+	pEmitter2.addEmitterSpawn<ParticleSystem::RatioSpawner>( 30, .1f );
 	pEmitter2.addEmitterInit<ParticleSystem::SquarePosInit>( 0, 10 , 0, 400);
 //	pEmitter2.addEmitterInit<ParticleSystem::ConstPosInit>( 10 , 20  );
 	pEmitter2.addEmitterInit<ParticleSystem::ConstSpeedInit>( 4.f,0.f );
@@ -43,9 +41,7 @@ int main()
 
 	while (!ptc_process_events())
 	{
-		bench.get()->setTimer("BasicDraw");
 		engine.Draw();
-		bench.get()->stopTimer();
 	}
 
 

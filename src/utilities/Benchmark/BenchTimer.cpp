@@ -11,9 +11,6 @@ namespace Benchmark
 	
 	BenchTimer::~BenchTimer() noexcept
 	{
-		if(_values.size() != 0)
-			avgTheValues();
-		
 		writeToFile();
 	}
 
@@ -26,8 +23,11 @@ namespace Benchmark
 	void
 	BenchTimer::stopRecord( time_point<BenchClock> p_timeStoped ) noexcept
 	{
-		auto ellapsedTime = duration_cast<TimeMeasure>(p_timeStoped - _start);
+		auto init = std::chrono::time_point_cast<TimeMeasure>(_start).time_since_epoch().count();
+		auto end = std::chrono::time_point_cast<TimeMeasure>(p_timeStoped).time_since_epoch().count();
 		
+		auto ellapsedTime = end - init;
+
 		_values.push_back( ellapsedTime );
 
 		if( _values.size() == _values.capacity() )
@@ -45,7 +45,7 @@ namespace Benchmark
 		
 		for(auto& value : _values)
 		{
-			valueCount = value.count();
+			valueCount = value;
 
 			avgTime += valueCount;
 			
@@ -57,9 +57,6 @@ namespace Benchmark
 		}
 
 		avgTime /= _values.size();
-
-		// std::cout << "--------------- Timer of {" << _name << "} results ---------------" << '\n';
-		// std::cout << "Max Time : [" << float(max)/1000 << "] , Min Time : [" << float(min)/1000 << "] , Avg Time [" << float(avgTime)/1000 << "]\n";
 
 		addFramerData( max, min, avgTime );
 		cleanValues();
@@ -88,7 +85,7 @@ namespace Benchmark
 		for(auto& val : _timerData)
 		{
 			auto [max, min, avg] = val;
-			file << "Max Time : [" << float(max)/1000 << "] , Min Time : [" << float(min)/1000 << "] , Avg Time [" << float(avg)/1000 << "]\n";
+			file << "Max Time : [" << double(max)*0.001 << "] , Min Time : [" << double(min)*0.001 << "] , Avg Time [" << double(avg)*0.001 << "]\n";
 		}
 		file.close();
 	}

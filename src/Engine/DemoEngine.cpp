@@ -24,9 +24,11 @@ DemoEngine::Draw() noexcept
 {
 	if(_timer.update())
 	{
+		bench.get()->setTimer("BasicDraw");
 		updateBuffer();
 		_drawer.get()->Draw( *_drawBuffer );
 		swapDoubleBuffer();
+		bench.get()->stopTimer();
 	}
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <utilities/chronoTypeAlias.hpp>
+#include <iostream>
 
 struct Timer
 {

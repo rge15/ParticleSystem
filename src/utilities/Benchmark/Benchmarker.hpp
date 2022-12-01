@@ -6,7 +6,7 @@ namespace Benchmark
 	class Benchmarker
 	{
 	private:
-		static const std::size_t _avgValuesInTimer { 30 };
+		static const std::size_t _avgValuesInTimer { 60 };
 
 		unorderMap<std::string, uniqPtr<BenchTimer>> _timers {};
 

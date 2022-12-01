@@ -4,8 +4,6 @@
 void
 Drawer::Draw( uint32_t& p_buffer ) noexcept
 {
-	// _timer.reset();
-	
 	//Draw Logic
 	for(auto& pSystem : _pSystems)
 	{

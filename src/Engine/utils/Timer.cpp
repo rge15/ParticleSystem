@@ -25,6 +25,7 @@ Timer::reset( int p_frameRate ) noexcept
 		_refreshTime = 1.f/p_frameRate;
 	}
 	_initTime = demoClock::now();
+
 	_lastTime = 0.f ;
 }
 
