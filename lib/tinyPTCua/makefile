@@ -78,4 +78,4 @@ info :
 
 clean :
 	rm -rf $(OBJDIRS)
-	rm $(APP)
+	rm $(LIB)

@@ -23,6 +23,7 @@ namespace ParticleSystem
 			for(int i = 0 ; i < _spawnParticlesNum; i++)
 			{
 				auto& particle = p_particles.emplace_back();
+
 				for(auto& initer : p_initBehaviour)
 					initer.get()->init( particle );
 			}

@@ -2,6 +2,8 @@
 #include <utilities/chronoTypeAlias.hpp>
 #include <Engine/DataTypes/Position.hpp>
 #include <Engine/DataTypes/Color.hpp>
+#include <Engine/DataTypes/Speed.hpp>
+#include <Engine/DataTypes/Life.hpp>
 
 namespace ParticleSystem
 {

@@ -3,6 +3,7 @@
 // #include <slotmap/using/typeAlias.hpp>
 #include <iostream>
 #include <assert.h>
+#include <Engine/utils/metaProggraming.hpp>
 
 //Structure for Index data
 struct IdPair
@@ -11,11 +12,13 @@ struct IdPair
 	int _gen {-1};
 };
 
-template<typename T>
+template<typename... T>
 class Slotmap
 {
 	using Indices = Vector<IdPair>;
-	using Data = Vector< T >;
+	using VectorTypes = Tuple<T...>;
+	using Data = Tuple< Vector<T>... >;
+	using FType = std::tuple_element_t<0, std::tuple<T...>>;
 
 	private:
 		//Slot Generation Counter
@@ -24,10 +27,34 @@ class Slotmap
 		Size_t _free { 0 };
 		//Vector of Slot Indices
 		Indices _index {};
-		//Vector of data contiguous in memory
+		//Tuple of vectors with data contiguous in memory
 		Data _data {};
+		Size_t _numAttributes = std::tuple_size<Data>{};
 		//Vector of id's to _index Slot that contains de _data;
 		Vector<Size_t> _clear {};
+
+	    static constexpr auto reserveVectorData = [](int val, auto&& tuple_value)
+	    {
+	        //std::cout << "Vec data capacity : " << tuple_value.capacity() << '\n';
+	        //std::cout << "Size to reserve : " << val << '\n';
+	        tuple_value.reserve(val);
+	        //std::cout << "Vec data capacity : " << tuple_value.capacity() << '\n';
+	    };
+
+	    static constexpr auto addVectorData = [](auto&& tuple_value)
+	    {
+	        tuple_value.emplace_back();
+	    };
+
+	    static constexpr auto removeVectorData = [](int pos, auto&& tuple_value)
+	    {
+			tuple_value[ pos ] = std::move( tuple_value.back() );
+	    };
+
+	    static constexpr auto popVectorData = [](auto&& tuple_value)
+	    {
+			tuple_value.pop_back();
+	    };
 
 		/**
 		 * 	@brief Resizes the index, data & clearIndex containers
@@ -41,7 +68,7 @@ class Slotmap
 		 * 	@param p_data REference to data to find his position
 		*/
 		Size_t
-		getDataId( const T& p_data ) const noexcept;
+		getDataId( const FType& p_data ) const noexcept;
 
 		/**
 		 * 	@brief Reserves a free Slot Index position in the index array and fill his rata
@@ -52,7 +79,7 @@ class Slotmap
 		 * 	@return Returns the Slot position at the slotmap _index vector.
 		*/
 		Size_t
-		getSlotID( const T& p_val ) noexcept;
+		getSlotID( const FType& p_val ) noexcept;
 
 		/**
 		 * 	@brief Checks if the slotmap needs to be resized
@@ -65,6 +92,9 @@ class Slotmap
 		*/
 		void
 		renumIndexChain() noexcept;
+
+		void
+		reserveData(int p_size) noexcept;
 
 	public:
 		/**
@@ -85,17 +115,7 @@ class Slotmap
 		 * 	@return Returns the key for acces with the inserted data
 		*/
 		IdPair
-		addSlot( T&& p_data ) noexcept;
-
-		/**
-		 * 	@brief Adds data to the slotmap
-		 * 
-		 * 	@param p_data Object to add into the Slotmap data
-		 * 
-		 * 	@return Returns the key for acces with the inserted data
-		*/
-		IdPair
-		addSlot( T& p_data ) noexcept;
+		addSlot() noexcept;
 
 		/**
 		 * 	@brief Delets the data given his key
@@ -112,7 +132,8 @@ class Slotmap
 		 * 
 		 * 	@return Reference to the object.
 		*/
-		T&
+		template<typename t>
+		t&
 		getItem( const IdPair& p_slot ) noexcept;
 
 		/**
@@ -122,6 +143,14 @@ class Slotmap
 		*/
 		Data&
 		getDataVector() noexcept { return _data; };
+
+		template<typename t>
+		Vector<t>&
+		getDataVector() noexcept;
+
+		void
+		autoDeleteSlot( const int p_pairId ) noexcept;
+
 };
 
 #include "Slotmap.tpp"

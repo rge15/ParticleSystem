@@ -9,7 +9,6 @@ namespace ParticleSystem
 		for(auto& updater : _updates)
 			for(auto& particle : p_particles)
 				updater.get()->update( particle );
-
 	}
 
 
