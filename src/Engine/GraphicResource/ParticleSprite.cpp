@@ -12,15 +12,15 @@ namespace Graphics
 
 	void
 	ParticleSprite::drawParticle(
-		uint32_t* p_buffer, const Position& p_emitterPos ,const ParticleSystem::Particle& p_particle
+		uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
 	) const noexcept
 	{
 		int iStart, jStart, iEnd{ _height }, jEnd{ _width };
 		int i, j;
 		int finalX, finalY;
 
-		int _posX = p_emitterPos.x + p_particle._pos.x;
-		int _posY = p_emitterPos.y + p_particle._pos.y;
+		int _posX = p_emitterPos.x + p_particlePos.x;
+		int _posY = p_emitterPos.y + p_particlePos.y;
 
 		finalX = DemoMath::max<int>( _posX, 0 );
 		finalY = DemoMath::max<int>( _posY, 0 );
@@ -37,7 +37,7 @@ namespace Graphics
 		for( i = iStart ; i < iEnd ; i++)
 			for( j = jStart ; j< jEnd ; j++)
 			{
-				Color pColor = p_particle._color;
+				Color pColor = p_particleColor;
 				//TODO : Aquí pillar el {_data[i * _width + j]} y procesarlo con el color de la particula
 
 				uint32_t particleSprite = _data[i * _width + j];

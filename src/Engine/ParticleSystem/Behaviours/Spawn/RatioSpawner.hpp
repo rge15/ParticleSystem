@@ -19,6 +19,6 @@ namespace ParticleSystem
 		~RatioSpawner() = default;
 
 		void
-		spawn( Vector<Particle>& p_particles, Vector<uniqPtr<BaseInit>>& p_initBehaviour ) noexcept override;
+		spawn( ParticleSlotmap& p_particles, Vector<uniqPtr<BaseInit>>& p_initBehaviour ) noexcept override;
 	};	
 }

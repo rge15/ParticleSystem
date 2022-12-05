@@ -3,10 +3,16 @@
 namespace ParticleSystem
 {
 	void
-	ApplySpeedUpdater::update( Particle& p_particle ) const noexcept
+	ApplySpeedUpdater::update( ParticleSlotmap& p_particles ) const noexcept
 	{
-		p_particle._pos.x += p_particle._velX;
-		p_particle._pos.y += p_particle._velY;
+		auto& vecPosition = p_particles.getDataVector<Position>();
+		auto& vecSpeed = p_particles.getDataVector<Speed>();
+
+		for(int i = 0; i < vecPosition.size(); i++ )
+		{
+			vecPosition.data()[i].x += vecSpeed.data()[i]._x;
+			vecPosition.data()[i].y += vecSpeed.data()[i]._y;
+		}
 	}
 
 }

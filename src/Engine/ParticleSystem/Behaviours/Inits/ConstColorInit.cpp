@@ -14,9 +14,10 @@ namespace ParticleSystem
 //-----------------------------------------------------------------------------
 
 	void
-	ConstColorInit::init(Particle& p_particle) const noexcept
+	ConstColorInit::init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept
 	{
-		p_particle._color = _initColor;
+		auto& particleColor = p_particles.getItem<Color>(p_particleKey);
+		particleColor = _initColor;
 	}
 
 }

@@ -13,13 +13,15 @@ namespace ParticleSystem
 //-----------------------------------------------------------------------------
 
 	void
-	SquarePosInit::init(Particle& p_particle) const noexcept
+	SquarePosInit::init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept
 	{
         int randX = rand()%_xDiff - _minx;
         int randY = rand()%_yDiff - _miny;
 
-		p_particle._pos.x = randX;
-		p_particle._pos.y = randY;
+		auto& particlePos = p_particles.getItem<Position>(p_particleKey);
+
+		particlePos.x = randX;
+		particlePos.y = randY;
 	}
 
 }

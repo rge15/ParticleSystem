@@ -14,7 +14,7 @@ namespace ParticleSystem
 		~SquarePosInit() = default;
 
 		void
-		init(Particle& p_particle) const noexcept override;
+		init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept override;
 		
 	};
 

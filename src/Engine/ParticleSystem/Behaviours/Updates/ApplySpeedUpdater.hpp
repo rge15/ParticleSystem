@@ -10,7 +10,7 @@ namespace ParticleSystem
 		~ApplySpeedUpdater() = default;
 
 		void
-		update( Particle& p_particle ) const noexcept override;
+		update( ParticleSlotmap& p_particles ) const noexcept override;
 
 	};
 }

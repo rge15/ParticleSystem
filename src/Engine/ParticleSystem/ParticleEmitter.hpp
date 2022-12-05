@@ -3,8 +3,10 @@
 #include <Engine/ParticleSystem/Behaviours/EmitterInitiator.hpp>
 #include <Engine/ParticleSystem/Behaviours/EmitterSpawner.hpp>
 #include <Engine/ParticleSystem/Behaviours/EmitterUpdater.hpp>
+#include <Engine/ParticleSystem/ParticleAttributeIncludes.hpp>
+#include <Engine/DataStructures/Slotmap.hpp>
+#include <Engine/utils/engineAlias.hpp>
 
-#include <Engine/DataTypes/Position.hpp>
 namespace ParticleSystem
 {
 	class Emitter
@@ -18,7 +20,7 @@ namespace ParticleSystem
 		EmitterInitiator _initiator;
 		EmitterUpdater _updater;
 
-		Vector<Particle> _particles;
+		ParticleSlotmap _particles;
 
 	public:
 	
@@ -47,7 +49,6 @@ namespace ParticleSystem
 		
 		void
 		killOldParticles() noexcept;
-
 
 	};
 

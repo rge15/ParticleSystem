@@ -11,10 +11,11 @@ namespace ParticleSystem
 //-----------------------------------------------------------------------------
 
 	void
-	ConstSpeedInit::init(Particle& p_particle) const noexcept
+	ConstSpeedInit::init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept
 	{
-		p_particle._velX = _vx;
-		p_particle._velY = _vy;
+		auto& particleSpeed = p_particles.getItem<Speed>(p_particleKey);
+		particleSpeed._x = _vx;
+		particleSpeed._y = _vy;
 	}
 
 }

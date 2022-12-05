@@ -16,16 +16,18 @@ namespace ParticleSystem
 //-----------------------------------------------------------------------------
 
 	void
-	RatioSpawner::spawn( Vector<Particle>& p_particles, Vector<uniqPtr<BaseInit>>& p_initBehaviour ) noexcept
+	RatioSpawner::spawn( ParticleSlotmap& p_particles, Vector<uniqPtr<BaseInit>>& p_initBehaviour ) noexcept
 	{
 		if(_ratioSpawnerTimer.update())
 		{
 			for(int i = 0 ; i < _spawnParticlesNum; i++)
 			{
-				auto& particle = p_particles.emplace_back();
+				//auto& particle = p_particles.emplace_back();
+
+				auto particleKey = p_particles.addSlot();
 
 				for(auto& initer : p_initBehaviour)
-					initer.get()->init( particle );
+					initer.get()->init( p_particles, particleKey );
 			}
 		}
 	}

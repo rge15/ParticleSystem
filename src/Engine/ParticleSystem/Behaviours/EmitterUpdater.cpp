@@ -4,11 +4,10 @@ namespace ParticleSystem
 {
 
 	void
-	EmitterUpdater::updateParticles( Vector<Particle>& p_particles ) const noexcept
+	EmitterUpdater::updateParticles( ParticleSlotmap& p_particles ) const noexcept
 	{
 		for(auto& updater : _updates)
-			for(auto& particle : p_particles)
-				updater.get()->update( particle );
+			updater.get()->update( p_particles );
 	}
 
 

@@ -2,6 +2,7 @@
 #include <utilities/alias.hpp>
 #include <Engine/ParticleSystem/Particle.hpp>
 #include <Engine/ParticleSystem/Behaviours/Inits/BaseInit.hpp>
+#include <Engine/utils/engineAlias.hpp>
 
 namespace ParticleSystem
 {
@@ -13,6 +14,6 @@ namespace ParticleSystem
 		virtual ~BaseSpawner() = default;
 
 		void
-		virtual spawn( Vector<Particle>& p_particles, Vector<uniqPtr<BaseInit>>& p_initBehaviour ) = 0;
+		virtual spawn( ParticleSlotmap& p_particles, Vector<uniqPtr<BaseInit>>& p_initBehaviour ) = 0;
 	};
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include <utilities/alias.hpp>
-// #include <slotmap/using/typeAlias.hpp>
 #include <iostream>
 #include <assert.h>
 #include <Engine/utils/metaProggraming.hpp>
@@ -143,6 +142,9 @@ class Slotmap
 		*/
 		Data&
 		getDataVector() noexcept { return _data; };
+
+		Vector<Size_t>&
+		getClearVector() noexcept { return _clear; };
 
 		template<typename t>
 		Vector<t>&

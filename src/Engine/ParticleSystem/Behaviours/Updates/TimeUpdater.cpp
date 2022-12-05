@@ -3,12 +3,18 @@
 namespace ParticleSystem
 {
 	void
-	TimeUpdater::update( Particle& p_particle ) const noexcept
+	TimeUpdater::update( ParticleSlotmap& p_particles ) const noexcept
 	{
-		float lifeTime = std::chrono::duration_cast<std::chrono::milliseconds>(demoClock::now() - p_particle._initLife).count()/1000.;
+		auto& lifeVec = p_particles.getDataVector<Life>();
 
-		p_particle._currLifeTime = lifeTime;
-		p_particle._currNormalizedLifeTime = lifeTime / p_particle._totalLifeTime;
+		for(auto& life : lifeVec)
+		{
+			float lifeTime = std::chrono::duration_cast<std::chrono::milliseconds>(demoClock::now() - life._initLife).count()/1000.;
+
+			life._currLifeTime = lifeTime;
+			life._currNormalizedLifeTime = lifeTime / life._totalLifeTime;
+		}
+
 	}
 
 }

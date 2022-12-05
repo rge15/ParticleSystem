@@ -11,10 +11,11 @@ namespace ParticleSystem
 //-----------------------------------------------------------------------------
 
 	void
-	ConstPosInit::init(Particle& p_particle) const noexcept
+	ConstPosInit::init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept
 	{
-		p_particle._pos.x = _x;
-		p_particle._pos.y = _y;
+		auto& particlePos = p_particles.getItem<Position>(p_particleKey);
+		particlePos.x = _x;
+		particlePos.y = _y;
 	}
 
 }

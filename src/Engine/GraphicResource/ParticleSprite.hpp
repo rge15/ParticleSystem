@@ -2,6 +2,8 @@
 #include <Engine/GraphicResource/Sprite.hpp>
 #include <Engine/ParticleSystem/Particle.hpp>
 #include <Engine/DemoEngineConfig.hpp>
+#include <Engine/ParticleSystem/ParticleAttributeIncludes.hpp>
+
 namespace Graphics
 {
 	class ParticleSprite : public Sprite
@@ -14,7 +16,7 @@ namespace Graphics
 	
 		void
 		drawParticle(
-			uint32_t* p_buffer, const Position& p_emitterPos ,const ParticleSystem::Particle& p_particle
+			uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
 		) const noexcept;
 	
 	};

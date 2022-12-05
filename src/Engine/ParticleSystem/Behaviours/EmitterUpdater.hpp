@@ -2,6 +2,7 @@
 #include <Engine/ParticleSystem/Behaviours/Updates/updateIncludes.hpp>
 #include <Engine/utils/concepts.hpp>
 #include <Engine/utils/metaProggraming.hpp>
+#include <Engine/utils/engineAlias.hpp>
 
 namespace ParticleSystem
 {
@@ -17,7 +18,7 @@ namespace ParticleSystem
 		~EmitterUpdater() = default;
 
 		void
-		updateParticles( Vector<Particle>& p_particles ) const noexcept;
+		updateParticles( ParticleSlotmap& p_particles ) const noexcept;
 
 		template<updateBehaviour T, typename... args>
 		T&

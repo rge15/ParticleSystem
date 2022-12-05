@@ -12,9 +12,10 @@ namespace ParticleSystem
 //-----------------------------------------------------------------------------
 
 	void
-	ConstLifeInit::init(Particle& p_particle) const noexcept
+	ConstLifeInit::init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept
 	{
-		p_particle._totalLifeTime = _initLifeTime;
+		auto& particleLife = p_particles.getItem<Life>(p_particleKey);
+		particleLife._totalLifeTime = _initLifeTime;
 	}
 
 }

@@ -1,6 +1,7 @@
 #pragma once
 #include <utilities/alias.hpp>
 #include <Engine/ParticleSystem/Particle.hpp>
+#include <Engine/utils/engineAlias.hpp>
 
 namespace ParticleSystem
 {
@@ -11,7 +12,7 @@ namespace ParticleSystem
 			~BaseUpdater() = default;
 
 			void
-			virtual update( Particle& p_particle ) const noexcept = 0;
+			virtual update( ParticleSlotmap& p_particles ) const noexcept = 0;
 	};
 
 }
