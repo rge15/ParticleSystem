@@ -2,5 +2,5 @@
 
 struct Position
 {
-	int x { 0 }, y { 0 };
+	float x { 0.f }, y { 0.f };
 };

@@ -22,6 +22,15 @@ namespace ParticleSystem
 		_updater.updateParticles( _particles );
 
 		//Dibujar particulas
+		drawParticles( p_buffer );
+
+		////Llamar a borrador de partículas y a reordenación
+		killOldParticles();
+	}
+
+	void
+	Emitter::drawParticles(uint32_t* const p_buffer) noexcept
+	{
 		auto& vecPos = _particles.getDataVector<Position>();
 		auto& vecColor = _particles.getDataVector<Color>();
 
@@ -31,10 +40,6 @@ namespace ParticleSystem
 			_resource->drawParticle( p_buffer, _pos, position, *color );
 			++color; 
 		}
-
-
-		////Llamar a borrador de partículas y a reordenación
-		killOldParticles();
 	}
 
 	void

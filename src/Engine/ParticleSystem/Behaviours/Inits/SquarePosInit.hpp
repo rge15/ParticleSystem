@@ -7,10 +7,10 @@ namespace ParticleSystem
 	class SquarePosInit : public BaseInit
 	{
 	private:
-		int _minx { 0 }, _maxx { 0 }, _miny { 0 } , _maxy { 0 };
+		float _minx { 0 }, _maxx { 0 }, _miny { 0 } , _maxy { 0 };
         int _xDiff, _yDiff;
 	public:
-		SquarePosInit( int p_minx = 0 , int p_maxx = 200 , int p_miny = 0, int p_maxy = 200 ) noexcept;
+		SquarePosInit( float p_minx = 0.f , float p_maxx = 200.f , float p_miny = 0.f , float p_maxy = 200.f ) noexcept;
 		~SquarePosInit() = default;
 
 		void

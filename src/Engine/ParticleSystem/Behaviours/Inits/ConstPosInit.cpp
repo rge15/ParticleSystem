@@ -2,7 +2,7 @@
 
 namespace ParticleSystem
 {
-	ConstPosInit::ConstPosInit(int p_x, int p_y ) noexcept
+	ConstPosInit::ConstPosInit(float p_x, float p_y ) noexcept
 	: _x { p_x }, _y { p_y }
 	{
 	}

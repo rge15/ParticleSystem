@@ -2,6 +2,7 @@
 #include <utilities/alias.hpp>
 #include <Engine/ParticleSystem/Particle.hpp>
 #include <Engine/utils/engineAlias.hpp>
+#include <utilities/includeSSE.hpp>
 
 namespace ParticleSystem
 {

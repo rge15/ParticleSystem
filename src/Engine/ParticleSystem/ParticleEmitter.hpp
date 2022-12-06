@@ -50,6 +50,9 @@ namespace ParticleSystem
 		void
 		killOldParticles() noexcept;
 
+		void
+		drawParticles( uint32_t* const p_buffer ) noexcept;
+
 	};
 
 }
