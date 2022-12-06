@@ -85,7 +85,7 @@ namespace Benchmark
 		for(auto& val : _timerData)
 		{
 			auto [max, min, avg] = val;
-			file << "Max Time : [" << double(max)*0.001 << "] , Min Time : [" << double(min)*0.001 << "] , Avg Time [" << double(avg)*0.001 << "]\n";
+			file << "Max Time : [" << double(max)*0.000001 << " s] , Min Time : [" << double(min)*0.000001 << " s] , Avg Time [" << double(avg)*0.000001 << " s]\n";
 		}
 		file.close();
 	}
