@@ -22,8 +22,6 @@ namespace ParticleSystem
 		{
 			for(int i = 0 ; i < _spawnParticlesNum; i++)
 			{
-				//auto& particle = p_particles.emplace_back();
-
 				auto particleKey = p_particles.addSlot();
 
 				for(auto& initer : p_initBehaviour)

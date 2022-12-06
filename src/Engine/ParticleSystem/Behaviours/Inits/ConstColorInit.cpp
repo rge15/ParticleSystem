@@ -4,10 +4,20 @@ namespace ParticleSystem
 {
 	ConstColorInit::ConstColorInit(float p_r, float p_g, float p_b, float p_a ) noexcept
 	{
-		CHANNELFROMFLOAT(p_r, _initColor.R );
-		CHANNELFROMFLOAT(p_g, _initColor.G);
-		CHANNELFROMFLOAT(p_b, _initColor.B);
-		CHANNELFROMFLOAT(p_a, _initColor.A);
+		uint8_t a,r,g,b;
+		CHANNELFROMFLOAT(p_r, r );
+		CHANNELFROMFLOAT(p_g, g);
+		CHANNELFROMFLOAT(p_b, b);
+		CHANNELFROMFLOAT(p_a, a);
+
+		_ARGB |= a;
+		_ARGB << 8;
+		_ARGB |= r;
+		_ARGB << 8;
+		_ARGB |= g;
+		_ARGB << 8;
+		_ARGB |= b;
+
 	}
 
 //-----------------------------------------------------------------------------
@@ -17,7 +27,7 @@ namespace ParticleSystem
 	ConstColorInit::init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept
 	{
 		auto& particleColor = p_particles.getItem<Color>(p_particleKey);
-		particleColor = _initColor;
+		particleColor._color = _ARGB;
 	}
 
 }

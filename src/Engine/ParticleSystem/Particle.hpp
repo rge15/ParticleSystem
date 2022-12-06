@@ -23,7 +23,7 @@ namespace ParticleSystem
 			Position _pos {};
 			float _velX{ 0.f }, _velY{ 0.f };
 	
-			Color _color { 0xFF, 0xFF, 0xFF, 0xFF };
+			Color _color { 0xFFFFFFFF };
 			//TODO : Debería hacer un setColor, q reciba 4 floats y los pase de 0 a 255 en un uint8_t para cada canal 
 
 	};

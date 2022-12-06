@@ -3,6 +3,7 @@
 #include <Engine/ParticleSystem/Particle.hpp>
 #include <Engine/DemoEngineConfig.hpp>
 #include <Engine/ParticleSystem/ParticleAttributeIncludes.hpp>
+#include <utilities/includeSSE.hpp>
 
 namespace Graphics
 {
@@ -19,6 +20,11 @@ namespace Graphics
 			uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
 		) const noexcept;
 	
+		void
+		drawParticleSSE(
+			uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
+		) const noexcept;
+
 	};
 
 }
