@@ -15,8 +15,12 @@ namespace ParticleSystem
 	void
 	SquarePosInit::init(ParticleSlotmap& p_particles, IdPair& p_particleKey) const noexcept
 	{
-        float randX = rand()%_xDiff - _minx;
-        float randY = rand()%_yDiff - _miny;
+		float randX { 0.f }, randY { 0.f }; 
+		if( _xDiff > 0 )
+        	randX = rand()%_xDiff - _minx;
+        
+		if( _yDiff > 0 )
+			randY = rand()%_yDiff - _miny;
 
 		auto& particlePos = p_particles.getItem<Position>(p_particleKey);
 

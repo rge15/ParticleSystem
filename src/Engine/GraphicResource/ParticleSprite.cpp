@@ -216,12 +216,13 @@ namespace Graphics
 		srcColor = _mm_unpacklo_epi8( srcColor, zero );
 
 		__m128i alphaMask = _mm_set_epi32( 0x00FF0000, 0x00000000, 0x00FF0000, 0x00000000 );
+		__m128i dstAlphaMask = _mm_set_epi32( 0x00FF00FF, 0x00FF00FF, 0x00FF00FF, 0x00FF00FF );
 
 		__m128i* buffStart { nullptr };
 
-		for( i = 0 ; i < _height ; i++)
+		for( i = iStart ; i < iEnd ; i++)
 		{
-			buffStart = reinterpret_cast<__m128i*>( &p_buffer[i*Demoengine::Config::_widthScr]);
+			buffStart = reinterpret_cast<__m128i*>( &p_buffer[(finalY + i - iStart)*Demoengine::Config::_widthScr]);
 
 			for(const __m128i* jStart = reinterpret_cast<const __m128i*>( &_data.data()[i * _width] ),
 				*jEnd = reinterpret_cast<const __m128i*>( &_data.data()[i * _width + _width - 1] ); 
@@ -271,8 +272,8 @@ namespace Graphics
 				//End Calculus final Color
 
 				//Alpha Blending
-				__m128i dstAlphaHi = _mm_xor_si128( particleAlphaHi, alphaMask );
-				__m128i dstAlphaLo = _mm_xor_si128( particleAlphaLo, alphaMask );
+				__m128i dstAlphaHi = _mm_xor_si128( particleAlphaHi, dstAlphaMask );
+				__m128i dstAlphaLo = _mm_xor_si128( particleAlphaLo, dstAlphaMask );
 
 				const __m128i dstOriginalVal = _mm_loadu_si128( buffStart );
 
