@@ -92,11 +92,11 @@ int main()
 
 	auto pSprite = Graphics::ParticleSprite("rsc/particle1.png");
 	pEmitter.setResource( pSprite );
-	pEmitter.addEmitterSpawn<ParticleSystem::RatioSpawner>( 1, 1.f );
+	pEmitter.addEmitterSpawn<ParticleSystem::RatioSpawner>( 50, 1.f );
 //	pEmitter.addEmitterInit<ParticleSystem::SquarePosInit>( 0., 10. , 0., 400.);
 	pEmitter.addEmitterInit<ParticleSystem::ConstPosInit>( 0 , 0  );
-	pEmitter.addEmitterInit<ParticleSystem::ConstSpeedInit>( 2.5f,0.f );
-	pEmitter.addEmitterInit<ParticleSystem::ConstColorInit>( 1.f,0.f,0.f,1.f );
+	pEmitter.addEmitterInit<ParticleSystem::ConstSpeedInit>( 0.f,0.f );
+	pEmitter.addEmitterInit<ParticleSystem::ConstColorInit>( 1.f,0.f,1.f,1.f );
 	pEmitter.addEmitterInit<ParticleSystem::ConstLifeInit>( 1.f );
 
 	pEmitter.addEmitterUpdate<ParticleSystem::TimeUpdater>();

@@ -37,7 +37,7 @@ namespace ParticleSystem
 		auto color = vecColor.begin(); 
 		for(auto& position : vecPos )
 		{
-			_resource->drawParticle( p_buffer, _pos, position, *color );
+			_resource->drawParticleSSE( p_buffer, _pos, position, *color );
 			++color; 
 		}
 	}
