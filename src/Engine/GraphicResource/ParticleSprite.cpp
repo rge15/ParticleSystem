@@ -227,6 +227,7 @@ namespace Graphics
 				*jEnd = reinterpret_cast<const __m128i*>( &_data.data()[i * _width + _width - 1] ); 
 				jStart < jEnd; jStart++, buffStart++ )
 			{
+				//Particle Color
 				__m128i sprColorHi = _mm_unpackhi_epi8( *jStart, zero );
 				__m128i sprColorLo = _mm_unpacklo_epi8( *jStart, zero );
 			
@@ -267,6 +268,27 @@ namespace Graphics
 				particleColorLo = _mm_srli_epi16( particleColorLo, 8 );
 
 				__m128i finalParticleColor = _mm_packus_epi16( particleColorLo, particleColorHi );
+				//End Calculus final Color
+
+				//Alpha Blending
+				__m128i dstAlphaHi = _mm_xor_si128( particleAlphaHi, alphaMask );
+				__m128i dstAlphaLo = _mm_xor_si128( particleAlphaLo, alphaMask );
+
+				const __m128i dstOriginalVal = _mm_loadu_si128( buffStart );
+
+				__m128i dstColorHi = _mm_unpackhi_epi8( dstOriginalVal, zero );
+				__m128i dstColorLo = _mm_unpacklo_epi8( dstOriginalVal, zero );
+
+				dstColorHi = _mm_mullo_epi16( dstColorHi, dstAlphaHi );
+				dstColorLo = _mm_mullo_epi16( dstColorLo, dstAlphaLo );
+
+				dstColorHi = _mm_srli_epi16( dstColorHi, 8 );
+				dstColorLo = _mm_srli_epi16( dstColorLo, 8 );
+
+				__m128i dstColor = _mm_packus_epi16( dstColorLo, dstColorHi );
+
+				finalParticleColor = _mm_adds_epu8( finalParticleColor, dstColor );
+				//End Alpha blending
 
 				_mm_storeu_si128( buffStart, finalParticleColor );
 			}
