@@ -35,9 +35,17 @@ namespace Graphics
 
 		_width = width;
 		_height = height;
+		_allignedWidth = (_width + 3) & ~0x03;
 
-		_data.resize( pixels.size()>>2 );
-		memcpy( _data.data(), pixels.data(), pixels.size());
+		//TODO : Aquñi tendré que hacer calculos para que cada fila esté alineada a 16 bytes
+		//TODO : Y volver a guardar los datos con 2 for's
+		//TODO : Tener una variable miembro que sea _allignedWidth que tenga el width real en los datos pero no en el sprite
+
+		auto iterValuesCopy = pixels.size()/_height;
+
+		_data.resize( _height * _allignedWidth );
+		for(int i = 0; i < _height; i++)
+			memcpy( &_data.data()[i * _allignedWidth], &pixels.data()[i*iterValuesCopy], iterValuesCopy );
 
 		uint8_t r,g,b;
 		uint32_t value;

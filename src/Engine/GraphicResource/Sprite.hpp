@@ -18,6 +18,7 @@ namespace Graphics
 
 		// Size of the sprite
 		int32_t _width{ 0 }, _height{ 0 };
+		int32_t _allignedWidth{ 0 };
 
 	public:
 

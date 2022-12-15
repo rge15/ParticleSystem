@@ -11,10 +11,10 @@ using namespace Demoengine::Config;
 class DemoEngine
 {
 	public :
-		uniqPtr<Benchmark::Benchmarker> bench = std::make_unique<Benchmark::Benchmarker>();
-
 		uint32_t _buffer1[ _widthScr * _heightScr ];
 		uint32_t _buffer2[ _widthScr * _heightScr ];
+
+		uniqPtr<Benchmark::Benchmarker> bench = std::make_unique<Benchmark::Benchmarker>();
 
 		uint32_t* _drawBuffer { _buffer1 };
 		uint32_t* _readBuffer { _buffer2 };
