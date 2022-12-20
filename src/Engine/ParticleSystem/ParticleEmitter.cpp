@@ -18,14 +18,13 @@ namespace ParticleSystem
 			spawner.get()->spawn( _particles, _initiator._inits );
 		}
 
-
 		//Llamar a updaters de partículas
 		_updater.updateParticles( _particles );
 
 		//Dibujar particulas
 		drawParticles( p_buffer );
 
-		////Llamar a borrador de partículas y a reordenación
+		//Llamar a borrador de partículas y a reordenación
 		killOldParticles();
 	}
 

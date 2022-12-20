@@ -197,11 +197,10 @@ namespace Graphics
 	) const noexcept
 	{
 		int iStart, jStart, iEnd{ _height }, jEnd{ _allignedWidth };
-		int i { 0 }, j { 0 };
 		int finalX, finalY;
 
-		int _posX = p_emitterPos.x + p_particlePos.x;
-		int _posY = p_emitterPos.y + p_particlePos.y;
+		int _posX = (int)p_emitterPos.x + (int)p_particlePos.x;
+		int _posY = (int)p_emitterPos.y + (int)p_particlePos.y;
 
 		finalX = DemoMath::max<int>( _posX, 0 );
 		finalY = DemoMath::max<int>( _posY, 0 );
@@ -272,9 +271,7 @@ namespace Graphics
 		int pixelsInnerPeels = ((p_finalX + pixelsToDraw) - postPeelLoopIter) - (p_finalX + prePeelLoopIter);
 		int SSELoopIterations = pixelsInnerPeels >> 2;
 
-		int i { 0 }, j { 0 };
-
-		for(i = p_iStart ; i < p_iEnd ; i++)
+		for(int i = p_iStart ; i < p_iEnd ; i++)
 		{
 			//?PrePeel pixels draws
 			drawNormalPixelsInRange( p_jStart, prePeelFinalPixel, p_iStart, p_finalX, p_finalY, p_buffer, p_particleColor, i );

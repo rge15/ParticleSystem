@@ -21,29 +21,28 @@ namespace ParticleSystem
 		auto& vecPosition = p_particles.getDataVector<Position>();
 		auto& vecSpeed = p_particles.getDataVector<Speed>();
 
-		float* pos = &vecPosition.data()[0].x;
+		int totalParticles = vecPosition.size();
+		//int totalFloatValues = totalParticles << 1; //? Each pos are 2 floats so size * 2
+		int totalSSEPacks = totalParticles >> 1;
+		int restCalculus = totalParticles & 0x01;
 
-		int vecPositions = vecPosition.size();
-		int SSEParticles = (vecPosition.size() & ~0x03);
-		int SSEPackNumber = SSEParticles >> 2;
-		int lastParticles = (vecPosition.size() & 0x03);
 
-		int i = 0;
-		int ctr = 0;
-
-		for(int i = 0 ; i < SSEPackNumber; i++, ctr+=4)
+		for(int i = 0; i < totalSSEPacks; i++)
 		{
-			const __m128 iPos = _mm_load_ps( &vecPosition.data()[i<<2].x );
-			const __m128 iSpeed = _mm_load_ps( &vecSpeed.data()[i<<2]._x );
-			const __m128 newPos = _mm_add_ps( iPos, iSpeed );
-			_mm_store_ps( &vecPosition.data()[i<<2].x, newPos );
+			const int vecPos = i << 1;
+			float * const particlePosPointer = &vecPosition[vecPos].x;
+			const __m128 particlePos = _mm_load_ps( particlePosPointer );
+			const __m128 particleVel = _mm_load_ps( &vecSpeed[vecPos]._x );
+			const __m128 newParticlePos = _mm_add_ps( particlePos, particleVel );
+			_mm_store_ps( particlePosPointer, newParticlePos );
 		}
 
-		for( int j = SSEParticles; j < SSEParticles + lastParticles; j++)
+		int countCalculatedPos = totalSSEPacks << 1;
+
+		for(int i = countCalculatedPos; i < totalParticles; i++ )
 		{
-			vecPosition.data()[j].x += vecSpeed.data()[j]._x;
-			vecPosition.data()[j].y += vecSpeed.data()[j]._y;
-			ctr++;
+			vecPosition.data()[i].x += vecSpeed.data()[i]._x;
+			vecPosition.data()[i].y += vecSpeed.data()[i]._y;	
 		}
 
 	}
