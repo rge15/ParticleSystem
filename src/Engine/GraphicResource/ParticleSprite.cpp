@@ -1,5 +1,6 @@
 #include "ParticleSprite.hpp"
 
+
 namespace Graphics
 {
 	ParticleSprite::ParticleSprite( std::string p_fileSrc )
@@ -38,7 +39,6 @@ namespace Graphics
 			for( j = jStart ; j< jEnd ; j++)
 			{
 				Color pColor = p_particleColor;
-				//TODO : Aquí pillar el {_data[i * _width + j]} y procesarlo con el color de la particula
 
 				uint32_t particleSprite = _data[i * _width + j];
 				uint8_t srcA, srcR, srcG, srcB;
@@ -72,7 +72,6 @@ namespace Graphics
 				srcG = uint16_t(srcG * srcA) >> 8;
 				srcB = uint16_t(srcB * srcA) >> 8;
 
-				//TODO : Tambien pillar le valor de p_buffer y hacer el alphaBlend con el valor calculado arriba
 				uint32_t* pScreen = &p_buffer[ (finalY + i - iStart) * Demoengine::Config::_widthScr + (finalX + j - jStart) ];
 				uint32_t valScreen = *pScreen;
 				uint8_t dstA, dstR, dstG, dstB;
@@ -118,74 +117,6 @@ namespace Graphics
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-	//TODO : En la primera iteración del dibujado vamos a supones que se dibuja siempre de forma alineada
-	void
-	ParticleSprite::drawParticleSSE(
-		uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
-	) const noexcept
-	{
-		int iStart, jStart, iEnd{ _height }, jEnd{ _width };
-		int i { 0 }, j { 0 };
-		int finalX, finalY;
-
-		int _posX = p_emitterPos.x + p_particlePos.x;
-		int _posY = p_emitterPos.y + p_particlePos.y;
-
-		finalX = DemoMath::max<int>( _posX, 0 );
-		finalY = DemoMath::max<int>( _posY, 0 );
-
-		jStart = abs(DemoMath::min<int>( _posX, 0 ));
-		iStart = abs(DemoMath::min<int>( _posY, 0 ));
-
-		if( finalX + _width > Demoengine::Config::_widthScr )
-			jEnd = Demoengine::Config::_widthScr - finalX;
-
-		if( finalY + _height > Demoengine::Config::_heightScr )
-			iEnd = Demoengine::Config::_heightScr - finalY;
-
-		__m128i* buffStart { nullptr };
-
-		int initPositionNonAlignedDiff = finalX & 0x03; // jStart % 4;
-		int prePeelLoopIter = initPositionNonAlignedDiff ? 4 - initPositionNonAlignedDiff : 0 ;
-
-		int postPeelLoopIter = (finalX + jEnd) & 0x03; // jEnd % 4;
-
-		int pixelsInnerPeels = ((finalX + jEnd) - postPeelLoopIter) - (finalX + prePeelLoopIter);
-		int SSELoopIterations = pixelsInnerPeels >> 2; 
-
-		for( i = iStart ; i < iEnd ; i++)
-		{
-			for(j = 0; j < prePeelLoopIter; j++)
-			{
-				uint32_t& bufferPixel = p_buffer[ (finalY + i - iStart) * Demoengine::Config::_widthScr + (finalX + j - jStart) ];
-				uint32_t particlePixel = _data[i * _width + j];
-				drawPixel( bufferPixel, p_particleColor._color, particlePixel );
-			}
-
-			buffStart = reinterpret_cast<__m128i*>( &p_buffer[ (finalY + i - iStart) * Demoengine::Config::_widthScr + (finalX + j - jStart)]);
-			j = 0;
-
-			for(const __m128i* jStart = reinterpret_cast<const __m128i*>( &_data.data()[i * _width] ); 
-				j < SSELoopIterations; jStart++, buffStart++ )
-			{
-				drawAndStoreSSEPixel( jStart, buffStart, p_particleColor._color );
-				++j;
-			}
-
-			for(j = 0; j < postPeelLoopIter; j++)
-			{
-				uint32_t& bufferPixel = p_buffer[ (finalY + i - iStart) * Demoengine::Config::_widthScr + (finalX + j - jStart) ];
-				uint32_t particlePixel = _data[i * _width + j];
-				drawPixel( bufferPixel, p_particleColor._color, particlePixel );
-			}
-
-		}
-
-	}
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-
 	void
 	ParticleSprite::drawPixel( uint32_t& p_buffer, uint32_t p_particleColor, uint32_t particlePixel ) const noexcept
 	{
@@ -218,8 +149,6 @@ namespace Graphics
 		srcG = uint16_t(srcG * srcA) >> 8;
 		srcB = uint16_t(srcB * srcA) >> 8;
 
-		//TODO : Tambien pillar le valor de p_buffer y hacer el alphaBlend con el valor calculado arriba
-		//uint32_t* pScreen = &p_buffer[ (finalY + i - iStart) * Demoengine::Config::_widthScr + (finalX + j - jStart) ];
 		uint32_t valScreen = p_buffer;
 		
 		uint8_t dstA, dstR, dstG, dstB;
@@ -263,7 +192,7 @@ namespace Graphics
 //-----------------------------------------------------------------------------
 
 	void
-	ParticleSprite::drawParticleSSE2(
+	ParticleSprite::drawParticleSSE(
 		uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
 	) const noexcept
 	{
@@ -302,22 +231,13 @@ namespace Graphics
 			return;	
 		}
 
-		if( srcAllignment == 0 )
-		{
-			//TODO
-			drawParticlesWithSrcAlligned( iStart, iEnd, jStart, jEnd, finalX, finalY, p_buffer, p_particleColor._color );
-			return;
-		}
-
-		//TODO
-		//drawWithSrcPeeling() -> Align with basicPixelDraw and next call to drawParticlesWithSrcAlligned;
+		drawParticlesWithSrcPeeling( iStart, iEnd, jStart, jEnd, finalX, finalY, p_buffer, p_particleColor._color );
 
 	}
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-	//TODO : Check if works
 	void
 	ParticleSprite::drawParticleNormally(
 		const int p_iStart, const int p_iEnd, const int p_jStart, const int p_jEnd,
@@ -326,18 +246,12 @@ namespace Graphics
 	) const noexcept
 	{
 		for(int i = p_iStart ; i < p_iEnd ; i++)
-			for(int j = p_jStart ; j< p_jEnd ; j++)
-			{
-				uint32_t& bufferPixel = p_buffer[ (p_finalY + i - p_iStart) * Demoengine::Config::_widthScr + (p_finalX + j - p_jStart) ];
-				uint32_t particlePixel = _data[i * _width + j];
-				drawPixel( bufferPixel, p_particleColor, particlePixel );
-			}
+			drawNormalPixelsInRange( p_jStart, p_jEnd, p_iStart, p_finalX, p_finalY, p_buffer, p_particleColor, i );
 	}
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 
-	//TODO : Conceptualizar but works
 	void
 	ParticleSprite::drawParticleWithSrcDstAlligned( 
 		const int p_iStart, const int p_iEnd, const int p_jStart, const int p_jEnd,
@@ -345,44 +259,31 @@ namespace Graphics
 		uint32_t* p_buffer, uint32_t p_particleColor
 	) const noexcept
 	{
-		__m128i* buffStart { nullptr };
+		int initPositionNonAlignedDiff = p_jStart & 0x03; // jStart % 4;
+		int prePeelLoopIter = initPositionNonAlignedDiff ? 4 - initPositionNonAlignedDiff : 0 ; //Num of pixels to prePeelDraw
+		int prePeelFinalPixel = p_jStart + prePeelLoopIter;
+		int srcSSEStartPoint = (p_jStart + 3) & ~0x03;
 
-		int initPositionNonAlignedDiff = p_finalX & 0x03; // jStart % 4;
-		int prePeelLoopIter = initPositionNonAlignedDiff ? 4 - initPositionNonAlignedDiff : 0 ;
+		int pixelsToDraw = p_jEnd - p_jStart;
 
-		int postPeelLoopIter = (p_finalX + p_jEnd) & 0x03; // jEnd % 4;
+		int postPeelLoopIter = (p_finalX + pixelsToDraw) & 0x03; //Num of pixels to postPeelDraw
+		int postPeelStartPixel = p_jEnd - postPeelLoopIter;
 
-		int pixelsInnerPeels = ((p_finalX + p_jEnd) - postPeelLoopIter) - (p_finalX + prePeelLoopIter);
-		int SSELoopIterations = pixelsInnerPeels >> 2; 
+		int pixelsInnerPeels = ((p_finalX + pixelsToDraw) - postPeelLoopIter) - (p_finalX + prePeelLoopIter);
+		int SSELoopIterations = pixelsInnerPeels >> 2;
 
 		int i { 0 }, j { 0 };
 
 		for(i = p_iStart ; i < p_iEnd ; i++)
 		{
-			//TODO : Conceptualizar los tres bucles
-			for(j = 0; j < prePeelLoopIter; j++)
-			{
-				uint32_t& bufferPixel = p_buffer[ (p_finalY + i - p_iStart) * Demoengine::Config::_widthScr + (p_finalX + j - p_jStart) ];
-				uint32_t particlePixel = _data[i * _allignedWidth + j];
-				drawPixel( bufferPixel, p_particleColor, particlePixel );
-			}
+			//?PrePeel pixels draws
+			drawNormalPixelsInRange( p_jStart, prePeelFinalPixel, p_iStart, p_finalX, p_finalY, p_buffer, p_particleColor, i );
 
-			buffStart = reinterpret_cast<__m128i*>( &p_buffer[ (p_finalY + i - p_iStart) * Demoengine::Config::_widthScr + (p_finalX + j - p_jStart)]);
-			j = 0;
+			//?Inner SSE pixel draws
+			drawInnerSSEPixelsAlligned( p_iStart, p_finalX, p_finalY, p_buffer, p_particleColor, prePeelLoopIter, i, SSELoopIterations, srcSSEStartPoint );
 
-			for(const __m128i* jStart = reinterpret_cast<const __m128i*>( &_data.data()[i * _allignedWidth] ); 
-				j < SSELoopIterations; jStart++, buffStart++ )
-			{
-				drawAndStoreSSEPixel( jStart, buffStart, p_particleColor );
-				++j;
-			}
-
-			for(j = 0; j < postPeelLoopIter; j++)
-			{
-				uint32_t& bufferPixel = p_buffer[ (p_finalY + i - p_iStart) * Demoengine::Config::_widthScr + (p_finalX + j - p_jStart) ];
-				uint32_t particlePixel = _data[i * _allignedWidth + j];
-				drawPixel( bufferPixel, p_particleColor, particlePixel );
-			}
+			//?PostPeel pixel draws
+			drawNormalPixelsInRange( postPeelStartPixel, p_jEnd, p_iStart, p_finalX, p_finalY, p_buffer, p_particleColor, i );
 
 		}
 	}
@@ -402,41 +303,36 @@ namespace Graphics
 //-----------------------------------------------------------------------------
 
 	void
-	ParticleSprite::drawParticlesWithSrcAlligned(
+	ParticleSprite::drawParticlesWithSrcPeeling(
 		const int p_iStart, const int p_iEnd, const int p_jStart, const int p_jEnd,
 		const int p_finalX, const int p_finalY,
 		uint32_t* p_buffer, uint32_t p_particleColor
 	) const noexcept
 	{
+		auto prePeelDraws = 4 - (p_jStart & 0x03);
+		auto dstShiftStep = (p_finalX + prePeelDraws) & 0x03;
 
-		auto dstShiftStep = p_finalX & 0x03;
-
-		//TODO [CHECK] : Aquí tocará meter un switch todo wapo en base a dstShiftSteep para poder llamar a _mm_srli_si128
-		//TODO [CHECK]: Template para la alineación del DST, lo cambias y checkeas que funcione
-		//TODO : Cuando todo funcione literalmente hacer para cuando el src necesite prePeeling y después copiar el switch o llamas a esta funcion 
-		//? Donde hay una 'N' es para q sea el template parameter
-		
 		switch (dstShiftStep)
 		{
-		case 0:
-			drawParticleWithSrcDstAlligned(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
-			break;
-		
-		case 1:
-			drawWithSrcAlligned<1>(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
-			break;
+			case 0:
+				drawParticleWithSrcDstAlligned(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
+				break;
 
-		case 2:
-			drawWithSrcAlligned<2>(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
-			break;
+			case 1:
+				drawWithSrcPeeling<1>(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
+				break;
 
-		case 3:
-			drawWithSrcAlligned<3>(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
-			break;
+			case 2:
+				drawWithSrcPeeling<2>(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
+				break;
 
-		default:
-			std::cout << "Some kind of error at DrawPArticlesWithSRCAlligned \n"; 
-			break;
+			case 3:
+				drawWithSrcPeeling<3>(p_iStart, p_iEnd, p_jStart, p_jEnd, p_finalX, p_finalY, p_buffer, p_particleColor);
+				break;
+
+			default:
+				std::cout << "Some kind of error at DrawPArticlesWithSRCAlligned \n"; 
+				break;
 		}
 
 	}
@@ -465,8 +361,6 @@ namespace Graphics
 		__m128i particleColorHi = _mm_mullo_epi16( sprColorHi, srcColor );
 		__m128i particleColorLo = _mm_mullo_epi16( sprColorLo, srcColor );
 
-		//TODO CHECK : Esto alomejor me está haciendo shift en partes que no quiero
-		//? Si es el caso se soluciona con una mascara AND y quedarme las partes que me interesa
 		particleColorHi = _mm_srli_epi16( particleColorHi, 8 );
 		particleColorLo = _mm_srli_epi16( particleColorLo, 8 );
 
@@ -501,8 +395,7 @@ namespace Graphics
 		__m128i dstAlphaHi = _mm_xor_si128( particleAlphaHi, dstAlphaMask );
 		__m128i dstAlphaLo = _mm_xor_si128( particleAlphaLo, dstAlphaMask );
 
-		//TODO : ESto creo que deberia ser sin la U
-		const __m128i dstOriginalVal = _mm_loadu_si128( &p_dst );
+		const __m128i dstOriginalVal = _mm_load_si128( &p_dst );
 
 		__m128i dstColorHi = _mm_unpackhi_epi8( dstOriginalVal, zero );
 		__m128i dstColorLo = _mm_unpacklo_epi8( dstOriginalVal, zero );
@@ -526,68 +419,126 @@ namespace Graphics
 
 	template<int N>
 	void
-	ParticleSprite::drawWithSrcAlligned(
+	ParticleSprite::drawWithSrcPeeling(
 		const int p_iStart, const int p_iEnd, const int p_jStart, const int p_jEnd,
 		const int p_finalX, const int p_finalY,
 		uint32_t* p_buffer, uint32_t p_particleColor
 	) const noexcept
 	{
-		auto pixelsToDraw = p_jEnd - p_jStart;
+		auto initPositionNonAlignedDiff = 4 - (p_jStart & 0x03);
+		auto prePeelIterations = initPositionNonAlignedDiff ? 4 - initPositionNonAlignedDiff : 0 ;
+		auto prePeelFinalPixel = p_jStart + prePeelIterations;
+		auto jStartWithPrePeel = (p_jStart + 3) & ~0x03;
+
+		auto pixelsToDraw = p_jEnd - jStartWithPrePeel;
 		auto pixelsToSSEDraw = pixelsToDraw & ~0x03;
 		auto postPeelLoop = pixelsToDraw - pixelsToSSEDraw;
+		auto postPeelFinalPixel = pixelsToSSEDraw + postPeelLoop;
 
 		auto dstAllignedPos = p_finalX & ~0x03;
 		auto nextFinalDstAllignedPos = (p_finalX + pixelsToSSEDraw) & ~0x03;
 
 		for( int i = p_iStart; i < p_iEnd; i++ )
 		{
-			// First SSE dstPixels
-			// [
-			__m128i* dstPtr = reinterpret_cast<__m128i*>( &p_buffer[ (p_finalY + i - p_iStart) * Demoengine::Config::_widthScr + dstAllignedPos ] );
-			const __m128i* srcNewPtr = reinterpret_cast<const __m128i*>( &_data[ i * _allignedWidth + p_jStart ] );
+			//? PostPeel pixels draw
+			drawNormalPixelsInRange( p_jStart, prePeelFinalPixel, p_iStart, p_finalX, p_finalY, p_buffer, p_particleColor, i );
 
-			__m128i dstFirstValue = _mm_load_si128( dstPtr );
-			__m128i srcFirstValue = _mm_load_si128( srcNewPtr );
+			//? Inner SSE Splited Pixels
+			drawInnerSSEPixelsSplited<N>( p_iStart, p_finalY, p_buffer, p_particleColor, i, dstAllignedPos, jStartWithPrePeel, nextFinalDstAllignedPos );
 
-			//Aquí la razon de pq necesita ser templates, el segundo valor debe de ser un valor directo
-			srcFirstValue = _mm_slli_si128( srcFirstValue, (N << 2) );
-			const __m128i firstPixelsColor = drawSSEPixel( srcFirstValue, dstFirstValue, p_particleColor );
-			_mm_store_si128( dstPtr, firstPixelsColor );
-			// ]
-
-			// Loop SSE srcPixels with dstPixels
-			const __m128i* srcOldPtr = srcNewPtr;
-			++dstPtr;
-			++srcNewPtr;
-
-			for(const __m128i* const lastDstPtr = reinterpret_cast<const __m128i* const>( &p_buffer[ (p_finalY + i - p_iStart) * Demoengine::Config::_widthScr + nextFinalDstAllignedPos ] );
-			 	dstPtr != lastDstPtr; ++dstPtr, ++srcNewPtr, ++srcOldPtr)
-			{
-				__m128i srcShiftedValue = _mm_or_si128( _mm_srli_si128( *srcOldPtr, ((4-N)<<2) ), _mm_slli_si128( *srcNewPtr, (N<<2) ) );
-				const __m128i firstPixelsColor = drawSSEPixel( srcShiftedValue, *dstPtr, p_particleColor );
-				_mm_store_si128( dstPtr, firstPixelsColor );
-			}
-
-			// Last SSE dstPixels
-			__m128i dstLastValue = _mm_load_si128( --dstPtr );
-			__m128i srcLastValue = _mm_load_si128( srcOldPtr );
-
-			//Aquí la razon de pq necesita ser templates, el segundo valor debe de ser un valor directo
-			srcLastValue = _mm_srli_si128( srcLastValue, (N<<2) );
-			const __m128i lastPixelsColor = drawSSEPixel( srcLastValue, dstLastValue, p_particleColor );
-			_mm_store_si128( dstPtr, lastPixelsColor );
-
-			//PostPeelingPixels
-			for(int j = pixelsToSSEDraw; j < (pixelsToSSEDraw + postPeelLoop) ; j++)
-			{
-				uint32_t& bufferPixel = p_buffer[ (p_finalY + i - p_iStart) * Demoengine::Config::_widthScr + (p_finalX + j - p_jStart) ];
-				uint32_t particlePixel = _data[i * _allignedWidth + j];
-				drawPixel( bufferPixel, p_particleColor, particlePixel );
-			}
-
+			//? PostPeel pixels draw
+			drawNormalPixelsInRange( pixelsToSSEDraw, postPeelFinalPixel, p_iStart, p_finalX, p_finalY, p_buffer, p_particleColor, i );
 		}
 	}
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
+	void
+	ParticleSprite::drawNormalPixelsInRange(
+		const int p_start, const int p_end,
+		const int p_iStart,
+		const int p_finalX, const int p_finalY,
+		uint32_t* p_buffer, uint32_t p_particleColor,
+		const int p_row
+	) const noexcept
+	{
+		for(int j = p_start; j < p_end; j++)
+		{
+			uint32_t& bufferPixel = p_buffer[ (p_finalY + p_row - p_iStart) * Demoengine::Config::_widthScr + (p_finalX + j - p_start) ];
+			uint32_t particlePixel = _data[p_row * _allignedWidth + j];
+			drawPixel( bufferPixel, p_particleColor, particlePixel );
+		}
+	}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+	void
+	ParticleSprite::drawInnerSSEPixelsAlligned(
+		const int p_iStart,
+		const int p_finalX, const int p_finalY,
+		uint32_t* p_buffer, uint32_t p_particleColor,
+		const int p_peelIter, const int p_row,
+		const int p_SEEIterations, const int p_srcSSEStartPoint
+	) const noexcept
+	{
+		__m128i* buffStart = reinterpret_cast<__m128i*>( &p_buffer[ (p_finalY + p_row - p_iStart) * Demoengine::Config::_widthScr + (p_finalX + p_peelIter)]);
+		int j = 0;
+
+		for(const __m128i* jStart = reinterpret_cast<const __m128i*>( &_data.data()[p_row * _allignedWidth + p_srcSSEStartPoint] );
+			j < p_SEEIterations; jStart++, buffStart++ )
+		{
+			drawAndStoreSSEPixel( jStart, buffStart, p_particleColor );
+			++j;
+		}
+	
+	}
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+	template<int N>
+	void
+	ParticleSprite::drawInnerSSEPixelsSplited(
+		const int p_iStart, const int p_finalY,
+		uint32_t* p_buffer, uint32_t p_particleColor,
+		const int p_row,
+		const int p_dstAlligned, const int p_srcStartPixel,
+		const int p_dstFinalPos
+	) const noexcept
+	{
+		//? First SSE dstPixels
+		__m128i* dstPtr = reinterpret_cast<__m128i*>( &p_buffer[ (p_finalY + p_row - p_iStart) * Demoengine::Config::_widthScr + p_dstAlligned ] );
+		const __m128i* srcNewPtr = reinterpret_cast<const __m128i*>( &_data[ p_row * _allignedWidth + p_srcStartPixel ] );
+
+		__m128i dstFirstValue = _mm_load_si128( dstPtr );
+		__m128i srcFirstValue = _mm_load_si128( srcNewPtr );
+
+		srcFirstValue = _mm_slli_si128( srcFirstValue, (N << 2) );
+		const __m128i firstPixelsColor = drawSSEPixel( srcFirstValue, dstFirstValue, p_particleColor );
+		_mm_store_si128( dstPtr, firstPixelsColor );
+
+		// Loop SSE srcPixels with dstPixels
+		const __m128i* srcOldPtr = srcNewPtr;
+		++dstPtr;
+		++srcNewPtr;
+
+		for(const __m128i* const lastDstPtr = reinterpret_cast<const __m128i* const>( &p_buffer[ (p_finalY + p_row - p_iStart) * Demoengine::Config::_widthScr + p_dstFinalPos ] );
+			dstPtr != lastDstPtr; ++dstPtr, ++srcNewPtr, ++srcOldPtr)
+		{
+			__m128i srcShiftedValue = _mm_or_si128( _mm_srli_si128( *srcOldPtr, ((4-N)<<2) ), _mm_slli_si128( *srcNewPtr, (N<<2) ) );
+			const __m128i firstPixelsColor = drawSSEPixel( srcShiftedValue, *dstPtr, p_particleColor );
+			_mm_store_si128( dstPtr, firstPixelsColor );
+		}
+
+		// Last SSE dstPixels
+		__m128i dstLastValue = _mm_load_si128( --dstPtr );
+		__m128i srcLastValue = _mm_load_si128( srcOldPtr );
+
+		srcLastValue = _mm_srli_si128( srcLastValue, (N<<2) );
+		const __m128i lastPixelsColor = drawSSEPixel( srcLastValue, dstLastValue, p_particleColor );
+		_mm_store_si128( dstPtr, lastPixelsColor );
+	}
 
 }

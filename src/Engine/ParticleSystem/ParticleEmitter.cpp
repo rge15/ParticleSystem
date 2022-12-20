@@ -18,6 +18,7 @@ namespace ParticleSystem
 			spawner.get()->spawn( _particles, _initiator._inits );
 		}
 
+
 		//Llamar a updaters de partículas
 		_updater.updateParticles( _particles );
 
@@ -37,7 +38,7 @@ namespace ParticleSystem
 		auto color = vecColor.begin(); 
 		for(auto& position : vecPos )
 		{
-			_resource->drawParticleSSE2( p_buffer, _pos, position, *color );
+			_resource->drawParticleSSE( p_buffer, _pos, position, *color );
 			++color; 
 		}
 	}

@@ -23,14 +23,27 @@ namespace ParticleSystem
 
 		float* pos = &vecPosition.data()[0].x;
 
-		for(__m128* iPos = reinterpret_cast<__m128*>(&vecPosition.data()[0].x), 
-			*endPos = reinterpret_cast<__m128*>(&vecPosition.back().x),
-			*iSpeed = reinterpret_cast<__m128*>(&vecSpeed.data()[0]._x);
-			iPos < endPos ; iPos++ , iSpeed++ )
+		int vecPositions = vecPosition.size();
+		int SSEParticles = (vecPosition.size() & ~0x03);
+		int SSEPackNumber = SSEParticles >> 2;
+		int lastParticles = (vecPosition.size() & 0x03);
+
+		int i = 0;
+		int ctr = 0;
+
+		for(int i = 0 ; i < SSEPackNumber; i++, ctr+=4)
 		{
-			__m128 newPos = _mm_add_ps( *iPos, *iSpeed );
-			_mm_store_ps( pos, newPos );
-			pos += 4;
+			const __m128 iPos = _mm_load_ps( &vecPosition.data()[i<<2].x );
+			const __m128 iSpeed = _mm_load_ps( &vecSpeed.data()[i<<2]._x );
+			const __m128 newPos = _mm_add_ps( iPos, iSpeed );
+			_mm_store_ps( &vecPosition.data()[i<<2].x, newPos );
+		}
+
+		for( int j = SSEParticles; j < SSEParticles + lastParticles; j++)
+		{
+			vecPosition.data()[j].x += vecSpeed.data()[j]._x;
+			vecPosition.data()[j].y += vecSpeed.data()[j]._y;
+			ctr++;
 		}
 
 	}

@@ -34,7 +34,7 @@ namespace Graphics
 		) const noexcept;
 
 		void
-		drawParticlesWithSrcAlligned(
+		drawParticlesWithSrcPeeling(
 			const int p_iStart, const int p_iEnd, const int p_jStart, const int p_jEnd,
 			const int p_finalX, const int p_finalY,
 			uint32_t* p_buffer, uint32_t p_particleColor
@@ -42,10 +42,46 @@ namespace Graphics
 
 		template<int N>
 		void
-		drawWithSrcAlligned(
+		drawWithSrcPeeling(
 			const int p_iStart, const int p_iEnd, const int p_jStart, const int p_jEnd,
 			const int p_finalX, const int p_finalY,
 			uint32_t* p_buffer, uint32_t p_particleColor
+		) const noexcept;
+
+		void
+		drawParticleWithSrcPrePeelDstAlligned(
+			const int p_iStart, const int p_iEnd, const int p_jStart, const int p_jEnd,
+			const int p_finalX, const int p_finalY,
+			uint32_t* p_buffer, uint32_t p_particleColor
+		)const noexcept;
+
+		void
+		drawNormalPixelsInRange(
+			const int p_start, const int p_end, 
+			const int p_iStart,
+			const int p_finalX, const int p_finalY,
+			uint32_t* p_buffer, uint32_t p_particleColor,
+			const int p_row
+		) const noexcept;
+
+
+		void
+		drawInnerSSEPixelsAlligned(
+			const int p_iStart,
+			const int p_finalX, const int p_finalY,
+			uint32_t* p_buffer, uint32_t p_particleColor,
+			const int p_peelIter, const int p_row,
+			const int p_SEEIterations, const int p_srcSSEStartPoint
+		) const noexcept;
+
+		template<int N>
+		void
+		drawInnerSSEPixelsSplited(
+			const int p_iStart, const int p_finalY,
+			uint32_t* p_buffer, uint32_t p_particleColor,
+			const int p_row,
+			const int p_dstAlligned, const int p_srcStartPixel,
+			const int p_dstFinalPos
 		) const noexcept;
 
 	public:
@@ -60,11 +96,6 @@ namespace Graphics
 	
 		void
 		drawParticleSSE(
-			uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
-		) const noexcept;
-
-		void
-		drawParticleSSE2(
 			uint32_t* p_buffer, const Position& p_emitterPos ,const Position& p_particlePos, const Color& p_particleColor
 		) const noexcept;
 
