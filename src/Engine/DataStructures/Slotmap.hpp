@@ -104,8 +104,11 @@ class Slotmap
 		Slotmap( Size_t p_size = 10 ) noexcept;
 
 		// Default destructor of SlotmapClass
-		~Slotmap() = default;
-
+		//~Slotmap() = default;
+		~Slotmap(){
+			std::cout << "Total particles in this : " << std::get<0>(_data).size() << "\n";
+		}
+		
 		/**
 		 * 	@brief Adds data to the slotmap
 		 * 

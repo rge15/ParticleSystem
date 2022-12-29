@@ -87,7 +87,6 @@ int main()
 	Drawer& draw = engine.getDrawer();
 
 	auto& pSystem = draw.addParticleSystem();
-
 	auto& pEmitter = pSystem.addEmitter();
 
 	auto pSprite = Graphics::ParticleSprite("rsc/particle1.png");
@@ -116,6 +115,7 @@ int main()
 
 	pEmitter2.addEmitterUpdate<ParticleSystem::TimeUpdater>();
 	pEmitter2.addEmitterUpdate<ParticleSystem::ApplySpeedUpdater>();
+
 
 
 	while (!ptc_process_events())

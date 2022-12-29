@@ -1,7 +1,7 @@
 ############################
 #### MAKE VARS
 ############################
-APP 	:= particle
+APP 	:= particleSSE
 CC 		:= g++
 CCFLAGS := -Wall -pedantic -std=c++20
 C		:= gcc
